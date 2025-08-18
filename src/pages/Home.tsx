@@ -2,21 +2,16 @@ import { Box, Button, Center, Collapsible, Flex, Grid, Image, Input, Spacer, Tex
 import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
 import { EURECA_COLORS } from "@/util/constants";
 import { useState } from "react";
-import FiltroCampus from "@/components/home/filtros/FiltroCampus";
 import FiltroCurso from "@/components/home/filtros/FiltroCurso";
 import FiltroPeriodo from "@/components/home/filtros/FiltroPeriodo";
+import FiltroCampus from "@/components/home/filtros/FiltroCampus";
+import FiltroNomes from "@/components/home/filtros/FiltroNomes";
 
 const Home = () => {
 
-    const [openIndex, setOpenIndex] = useState(null);
-    
-    const handleToggle = (index) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
-
   return (
     <>
-        <Box h={"100vh"} overflowY={"hidden"}>
+        <Box h={"100vh"} overflowY={"auto"}>
             <Box pl={"15vh"} pt={"5vh"} pr={"15vh"}>
                 <Flex justify="space-between" align="center">
                     <Flex pl="8vh" gap="4" align="center">
@@ -48,16 +43,26 @@ const Home = () => {
                     </CardRoot>
                 </Box>
 
-                <Box display={"flex"} pt={"2vh"} spaceX={"10"}>
-                    <Input placeholder="Pesquisar nome de aluno..." bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black"></Input>
-                    <Input placeholder="Pesquisar nome de turma..." bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black"></Input>
+                <FiltroNomes />
+
+                <Box h={"67vh"}>
+                    <Grid
+                        templateColumns="repeat(3, 1fr)"
+                        gap={4}
+                        pb={8}
+                        pt={3}
+                        alignItems="start"
+                    >
+                        <FiltroCampus />
+                        <FiltroCurso />
+                        <FiltroPeriodo />
+                    </Grid>
                 </Box>
 
-                <Grid maxH={"67vh"} overflowY={"auto"} className="grid-cols-3 margin-top-s" pb={8} pt={3} gap={4}>
-                    <FiltroCampus />
-                    <FiltroCurso />
-                    <FiltroPeriodo />
-                </Grid>
+                <Box>
+
+                </Box>
+
             </Box>
         </Box>
     </>

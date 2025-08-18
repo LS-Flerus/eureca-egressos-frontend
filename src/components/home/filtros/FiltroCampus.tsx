@@ -1,36 +1,75 @@
-import { Box, CardBody, CardRoot, CardTitle, Text } from "@chakra-ui/react";
-import { EURECA_COLORS } from "@/util/constants";
-import { useState } from "react";
-import { Collapsible } from "@chakra-ui/react";
+import { Box, Checkbox, CheckboxGroup, Collapsible, Fieldset, For, Text} from "@chakra-ui/react";
+import { CardBody, CardRoot } from "@chakra-ui/react/card";
+import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCampi } from "@/service/filterService";
 
 const FiltroCampus = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const [openCampus, setOpenCampus] = useState(false);
+    const [campusSelecionados, setCampusSelecionados] = useState<string[]>([]);
 
-  const handleToggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+    const {data: dataCampi, isLoading: isCampusLoading} = useQuery({
+        queryKey: ["filtroCampi"],
+        queryFn: getCampi
+    })
 
-  return (
-    <CardRoot size={"sm"} cursor={"pointer"} bg={EURECA_COLORS.AZUL_MEDIO}>
-      <CardBody>
-        <Collapsible.Root>
-          <Collapsible.Trigger
-            paddingY="3"
-            alignContent={"center"}
-            w={"full"}
-            onClick={() => handleToggle(0)}
-          >
-            <Text fontSize={"xl"}>Campus</Text>
-          </Collapsible.Trigger>
-          <Collapsible.Content>
-            <Box padding="4" borderWidth="1px">
-              {openIndex === 0 && <Text>Conteúdo do Campus</Text>}
-            </Box>
-          </Collapsible.Content>
-        </Collapsible.Root>
-      </CardBody>
-    </CardRoot>
-  );
-}; 
+    const handleCheckboxChange = (checked: boolean, value: string) => {
+        setCampusSelecionados((prev) =>
+            checked ? [...prev, value] : prev.filter((v) => v !== value)
+        );
+    };
 
-export default FiltroCampus; 
+    useEffect(() => {
+            console.log("Checkbox campus marcadas:", campusSelecionados);
+            sessionStorage.setItem(SESSION_STORAGE.CAMPI, JSON.stringify(campusSelecionados)) 
+        }, [campusSelecionados]);
+
+    return (
+        <CardRoot size="sm" bg={EURECA_COLORS.AZUL_MEDIO}>
+            <CardBody cursor="pointer">
+                <Collapsible.Root >
+                <Collapsible.Trigger
+                    paddingY="3"
+                    alignContent="center"
+                    w="full"
+                    cursor={"pointer"}
+                    onClick={() => setOpenCampus(!openCampus)}
+                >
+                    <Text fontSize="xl">Campus</Text>
+                </Collapsible.Trigger>
+                {openCampus && (
+                    <Collapsible.Content overflowY={"auto"}>
+                    <Box padding="4">
+                        {isCampusLoading ? (
+                            <Text>Carregando...</Text>
+                        ) : (
+                            <Fieldset.Root>
+                            <CheckboxGroup name="campus">
+                                <Fieldset.Content>
+                                <For each={dataCampi}>
+                                    {(value) => (
+                                    <Checkbox.Root 
+                                        key={value.campus} 
+                                        value={value.descricao} 
+                                        onCheckedChange={(details) => handleCheckboxChange(details.checked === true, value.campus+'')}
+                                    >
+                                        <Checkbox.HiddenInput />
+                                        <Checkbox.Control cursor={"pointer"} borderColor={EURECA_COLORS.BRANCO}/>
+                                        <Checkbox.Label>{value.descricao}</Checkbox.Label>
+                                    </Checkbox.Root>
+                                    )}
+                                </For>
+                                </Fieldset.Content>
+                            </CheckboxGroup>
+                            </Fieldset.Root>
+                            )}
+                    </Box>
+                    </Collapsible.Content>
+                )}
+                </Collapsible.Root>
+            </CardBody>
+        </CardRoot>
+)};
+
+export default FiltroCampus;

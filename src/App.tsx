@@ -3,7 +3,6 @@ import { Avatar, Box, Button, Card } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
  import { PublicRoutes } from './routes/Router.tsx'
-
 function App() {
 
   const router = createBrowserRouter([
@@ -29,7 +28,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
       </QueryClientProvider>
     </>
   )
