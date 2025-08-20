@@ -4,6 +4,15 @@ export type Campus = {
     representacao: string
 }
 
+export type Placa = {
+    startSemester: string,
+    endSemester: string,
+    courseCode: string,
+    className: string,
+    approved: boolean,
+    toAprove: boolean,
+}
+
 export type Curso = {
     codigo_do_curso: number,
     descricao: string,

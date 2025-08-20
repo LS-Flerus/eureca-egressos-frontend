@@ -1,6 +1,6 @@
-import { Box, Collapsible, Input, Text} from "@chakra-ui/react";
+import { Box, Collapsible, Input, Spacer, Text} from "@chakra-ui/react";
 import { CardBody, CardRoot } from "@chakra-ui/react/card";
-import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
+import { DIMENSOES, EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useEffect, useState } from "react";
 
 const FiltroPeriodo = () => {
@@ -30,13 +30,23 @@ const FiltroPeriodo = () => {
                 cursor={"pointer"}
                 onClick={() => setOpen(!open)}
             >
-            <Text fontSize="xl">Período</Text>
+            <Text fontSize="xl">Período de conclusão</Text>
           </Collapsible.Trigger>
           {open && (
-            <Collapsible.Content>
-              <Box padding="4">
-            <Input placeholder="Ex.: 2021.1" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setPeriodoInicio(e.target.value)}></Input>
-            <Input placeholder="Ex.: 2023.2" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setPeriodoFim(e.target.value)}></Input>
+            <Collapsible.Content h={DIMENSOES.ALTURA_FILTROS} alignItems={"center"}>
+              <Box padding="4" 
+                display="flex" 
+                flexDirection="column" 
+                alignItems="center" 
+                justifyContent="center"
+                h="100%"
+                >
+                
+                <Text>Período de início</Text>
+                <Input placeholder="Ex.: 2021.1" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setPeriodoInicio(e.target.value)}></Input>
+                
+                <Text pt={"5vh"}>Período de início</Text>
+                <Input placeholder="Ex.: 2023.2" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setPeriodoFim(e.target.value)}></Input>
               </Box>
             </Collapsible.Content>
           )}

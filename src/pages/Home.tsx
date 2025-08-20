@@ -1,72 +1,127 @@
-import { Box, Button, Center, Collapsible, Flex, Grid, Image, Input, Spacer, Text} from "@chakra-ui/react";
-import { CardBody, CardHeader, CardRoot, CardTitle } from "@chakra-ui/react/card";
-import { EURECA_COLORS } from "@/util/constants";
-import { useState } from "react";
+import { Box, Button, Center, Flex, For, Grid, Image, SimpleGrid, Spacer, Text} from "@chakra-ui/react";
+import { CardBody, CardRoot } from "@chakra-ui/react/card";
+import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
+import { useRef, useState } from "react";
 import FiltroCurso from "@/components/home/filtros/FiltroCurso";
 import FiltroPeriodo from "@/components/home/filtros/FiltroPeriodo";
 import FiltroCampus from "@/components/home/filtros/FiltroCampus";
 import FiltroNomes from "@/components/home/filtros/FiltroNomes";
+import { useMutation } from "@tanstack/react-query";
+import { getPlacasByFilter } from "@/service/placasService";
+import { FiltersPayload } from "@/interfaces/ServicePayloads";
+import { CardPlaca } from "@/components/home/CardPlaca";
+import { PlacaResponse } from "@/interfaces/ServiceResponses";
 
 const Home = () => {
 
-  return (
-    <>
-        <Box h={"100vh"} overflowY={"auto"}>
-            <Box pl={"15vh"} pt={"5vh"} pr={"15vh"}>
-                <Flex justify="space-between" align="center">
-                    <Flex pl="8vh" gap="4" align="center">
-                        <Image src="src/assets/escudo-ufcg.png" />
-                        <Image src="src/assets/eureca_egressos_logo.png" />
+    const [results, setResults] = useState<PlacaResponse[] | null>(null);
+    const [showResultsCard, setShowResultsCard] = useState(false);
+    const resultsRef = useRef<HTMLDivElement | null>(null);
+  
+    const handleSubmitButton = async () => {
+        const payload: FiltersPayload = {
+            courseCode: sessionStorage.getItem(SESSION_STORAGE.CURSOS) || null,
+            startSemester: sessionStorage.getItem(SESSION_STORAGE.PERIODO_INICIO) || null,
+            endSemester: sessionStorage.getItem(SESSION_STORAGE.PERIODO_FIM) || null,
+            className: sessionStorage.getItem(SESSION_STORAGE.NOME_TURMA) || null,
+            campus: sessionStorage.getItem(SESSION_STORAGE.CAMPI) || null,
+            approved: null,
+            toApprove: null,
+            studentName: sessionStorage.getItem(SESSION_STORAGE.NOME_ALUNO) || null,
+        };
+        setResults([])
+        setShowResultsCard(true);
+        getPlaquesByFilter.mutate(payload)
+     };
+
+    const getPlaquesByFilter = useMutation({
+        mutationKey: ["getPlaquesByFilter"],
+        mutationFn: getPlacasByFilter,
+        onSuccess: (data) => {
+            setResults(data); // atualiza o estado
+            if (resultsRef.current) {
+                resultsRef.current.scrollIntoView({ behavior: "smooth" }); // rola para o card
+            }
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+    });
+
+    return (
+        <>
+            <Box h={"100vh"} overflowY={"auto"}>
+                <Box pl={"15vh"} pt={"5vh"} pr={"15vh"}>
+                    <Flex justify="space-between" align="center">
+                        <Flex pl="8vh" gap="4" align="center">
+                            <Image src="src/assets/escudo-ufcg.png" />
+                            <Image src="src/assets/eureca_egressos_logo.png" />
+                        </Flex>
+                        <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO}>Login</Button>
                     </Flex>
-                    <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO}>Login</Button>
-                </Flex>
 
-                <Box display={"flex"} pt={"4vh"} spaceX={"24"}>
-                    <CardRoot className="margin-top" bg={EURECA_COLORS.CINZA}>
-                        <CardBody>
-                            <Text fontSize={"lg"}>Bem-vindo ao Eureca Egressos! Aqui você pode conferir  a versão digital das placas de concluintes dos e-gressos da UFCG.</Text>
-                        </CardBody>
-                    </CardRoot>
-                    <Spacer />
-                    <CardRoot className="margin-top" bg={EURECA_COLORS.CINZA}>
-                        <CardBody>
-                            <Text fontSize={"lg"}>Caso seja um coordenador de curso ou parte de uma comissão de formatura, realize seu login no sistema para ter acesso à seu perfil.</Text>
-                        </CardBody>
-                    </CardRoot>
+                    <Box display={"flex"} pt={"4vh"} spaceX={"24"}>
+                        <CardRoot className="margin-top" bg={EURECA_COLORS.CINZA}>
+                            <CardBody>
+                                <Text fontSize={"md"}>Bem-vindo ao Eureca Egressos! Aqui você pode conferir a versão digital das placas de concluintes dos e-gressos da UFCG.</Text>
+                            </CardBody>
+                        </CardRoot>
+                        <Spacer />
+                        <CardRoot className="margin-top" bg={EURECA_COLORS.CINZA}>
+                            <CardBody>
+                                <Text fontSize={"md"}>Caso seja um coordenador de curso ou parte de uma comissão de formatura, realize seu login no sistema para ter acesso à seu perfil.</Text>
+                            </CardBody>
+                        </CardRoot>
+                    </Box>
+                    <FiltroNomes />
+                    <Box h={"48vh"}>
+                        <Grid
+                            templateColumns="repeat(3, 1fr)"
+                            gap={4}
+                            pb={8}
+                            pt={3}
+                            alignItems="start"
+                        >
+                            <FiltroCampus />
+                            <FiltroCurso />
+                            <FiltroPeriodo />
+                        </Grid>
+                    </Box>
+
+                    <Center>
+                        <Button bg={EURECA_COLORS.AZUL_ESCURO} color={EURECA_COLORS.BRANCO} alignSelf={"center"} onClick={handleSubmitButton}> 
+                            <Text>
+                                Pesquisar Placas
+                            </Text>
+                        </Button>
+                    </Center>
+                    
+                    {showResultsCard  && (
+                        <Box ref={resultsRef} mt={6} h="50vh">
+                            <CardRoot bg={EURECA_COLORS.CINZA} h="40vh">
+                                <CardBody overflowY="auto">
+                                    <Text fontSize="lg" fontWeight="bold" mb={4}>
+                                        Resultados:
+                                    </Text>
+                                    {results === null ? (
+                                        <Text>Carregando...</Text>
+                                    ) : results.length > 0 ? (
+                                        <SimpleGrid columns={4} spaceX={4}>
+                                            <For each={results}>
+                                                {(item) => <CardPlaca placa={item}></CardPlaca>}
+                                            </For>
+                                        </SimpleGrid>
+                                    ) : (
+                                        <Text>Nenhuma placa encontrada.</Text>
+                                    )}
+                                </CardBody>
+                            </CardRoot>
+                        </Box>
+                    )}
                 </Box>
-
-                <Box display={"flex"} pt={"4vh"}>
-                    <CardRoot flex="1" className="margin-top" bg={EURECA_COLORS.AZUL_ESCURO}>
-                        <CardBody alignItems={"center"}>
-                            <Text fontSize={"3xl"}>Pesquisar Placas</Text>
-                        </CardBody>
-                    </CardRoot>
-                </Box>
-
-                <FiltroNomes />
-
-                <Box h={"67vh"}>
-                    <Grid
-                        templateColumns="repeat(3, 1fr)"
-                        gap={4}
-                        pb={8}
-                        pt={3}
-                        alignItems="start"
-                    >
-                        <FiltroCampus />
-                        <FiltroCurso />
-                        <FiltroPeriodo />
-                    </Grid>
-                </Box>
-
-                <Box>
-
-                </Box>
-
             </Box>
-        </Box>
-    </>
-  );
+        </>
+    );
 };
 
 export default Home;

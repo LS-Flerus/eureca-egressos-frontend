@@ -1,8 +1,6 @@
 import { Box, Input } from "@chakra-ui/react";
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getCourses } from "@/service/filterService";
 
 const FiltroNomes = () => {
     const [nomeAluno, setNomeAluno] = useState<string>();

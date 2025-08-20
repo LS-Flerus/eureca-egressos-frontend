@@ -1,6 +1,6 @@
 import { Box, Checkbox, CheckboxGroup, Collapsible, Fieldset, For, Text} from "@chakra-ui/react";
 import { CardBody, CardRoot } from "@chakra-ui/react/card";
-import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
+import { DIMENSOES, EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCampi } from "@/service/filterService";
@@ -22,7 +22,7 @@ const FiltroCampus = () => {
 
     useEffect(() => {
             console.log("Checkbox campus marcadas:", campusSelecionados);
-            sessionStorage.setItem(SESSION_STORAGE.CAMPI, JSON.stringify(campusSelecionados)) 
+            sessionStorage.setItem(SESSION_STORAGE.CAMPI, campusSelecionados.join(",")) 
         }, [campusSelecionados]);
 
     return (
@@ -39,7 +39,7 @@ const FiltroCampus = () => {
                     <Text fontSize="xl">Campus</Text>
                 </Collapsible.Trigger>
                 {openCampus && (
-                    <Collapsible.Content overflowY={"auto"}>
+                    <Collapsible.Content h={DIMENSOES.ALTURA_FILTROS} overflowY={"auto"}>
                     <Box padding="4">
                         {isCampusLoading ? (
                             <Text>Carregando...</Text>

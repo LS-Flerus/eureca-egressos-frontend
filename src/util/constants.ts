@@ -1,6 +1,9 @@
 export const ENDPOINTS = {
     CAMPI: "campi",
-    CURSOS: "cursos"
+    CURSOS: "cursos",
+    PLACAS_FILTRO: "plaque/getByFilter",
+    PLACAS_ID: "plaque/getById",
+    PLACAS_ALL: "plaque/getAll"
 }
 
 export const EURECA_COLORS = {
@@ -20,4 +23,18 @@ export const SESSION_STORAGE = {
     PERIODO_FIM: "periodoFim",
     NOME_TURMA: "nomeTurma",
     NOME_ALUNO: "nomeAluno"
+}
+
+export const DIMENSOES = {
+    ALTURA_FILTROS: "30vh"
+}
+
+export const MAPEAMENTO_CAMPUS = {
+    "1": "Campina Grande",
+    "2": "Cajazeiras",
+    "3": "Sousa",
+    "4": "Patos",
+    "5": "Cuité",
+    "7": "Sumé",
+    "9": "Pombal",
 }
