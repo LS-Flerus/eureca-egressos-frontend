@@ -17,10 +17,7 @@ export const CardPlaca = ({
     function navigatePaginaPlaca() {
         sessionStorage.setItem('placaVisualizadaId', placa.id);
         console.log(placa.id)
-
-        console.log('campanha atual:')
-        console.log(sessionStorage.getItem('currentCampaign'))
-        navigate("/campaign");
+        navigate("/egressos/placa/"+placa.id);
     }
 
     const [img,setImg] = useState("")

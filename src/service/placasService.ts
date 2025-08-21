@@ -18,7 +18,7 @@ export const getPlacasByFilter = async(payload: FiltersPayload) => {
 }
 
 export const getPlacasById = async(id: string) => {
-    const { data } = await axiosBackend.get<PlacaResponse[]> (
+    const { data } = await axiosBackend.get<PlacaResponse> (
         `/${ENDPOINTS.PLACAS_ID}`,
         {
             params: {

@@ -26,11 +26,33 @@ axiosBackend.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error?.response?.status === 401) {
-      window.location.href = "/eureca/";
+      window.location.href = "/egressos/";
     }
     return Promise.reject(error);
   }
 );
+
+const image_manager_url = "http://localhost:8080/"
+
+export const axiosImageManager = axios.create({
+  baseURL: image_manager_url,
+  headers: {
+    "Content-Type": "application/json"
+  }
+})
+
+axiosImageManager.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error: AxiosError) => {
+    if (error?.response?.status === 401) {
+      window.location.href = "/egressos/";
+    }
+    return Promise.reject(error);
+  }
+);
+
 
 const eureca_DAS = `https://eureca.lsd.ufcg.edu.br/das/v2/`
 
@@ -48,7 +70,7 @@ axiosDAS.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error?.response?.status === 401) {
-      window.location.href = "/graduacao/";
+      window.location.href = "/egressos/";
     }
     return Promise.reject(error);
   }
@@ -70,7 +92,7 @@ axiosAS.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error?.response?.status === 401) {
-      window.location.href = "/graduacao/";
+      window.location.href = "/egressos/";
     }
     return Promise.reject(error);
   }

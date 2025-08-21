@@ -3,7 +3,9 @@ export const ENDPOINTS = {
     CURSOS: "cursos",
     PLACAS_FILTRO: "plaque/getByFilter",
     PLACAS_ID: "plaque/getById",
-    PLACAS_ALL: "plaque/getAll"
+    PLACAS_ALL: "plaque/getAll",
+    ESTUDANTES_PLACA: "students/getAllByPlaqueId",
+    SESSOES_PLACA: "plaqueSessions/getAllByPlaque"
 }
 
 export const EURECA_COLORS = {

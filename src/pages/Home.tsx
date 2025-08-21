@@ -106,7 +106,7 @@ const Home = () => {
                                     {results === null ? (
                                         <Text>Carregando...</Text>
                                     ) : results.length > 0 ? (
-                                        <SimpleGrid columns={4} spaceX={4}>
+                                        <SimpleGrid columns={4} px={2} gapX={2} justifyItems={"stretch"}>
                                             <For each={results}>
                                                 {(item) => <CardPlaca placa={item}></CardPlaca>}
                                             </For>

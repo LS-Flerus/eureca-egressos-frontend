@@ -7,3 +7,20 @@ export type PlacaResponse = {
     toAprove: boolean,
     campus: number
 }
+
+export type EstudanteResponse = {
+    id: string,
+    name: string,
+    courseCode: string,
+    semester: string,
+    plaqueId: string,
+    photoId: string,
+}
+
+export type SessoesPlacaResponse = {
+    id: string;
+    plaqueId: string;
+    name: string;
+    content: string;
+    isList: boolean;
+}
