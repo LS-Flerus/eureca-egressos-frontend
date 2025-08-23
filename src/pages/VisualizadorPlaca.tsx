@@ -49,8 +49,7 @@ const VisualizadorPlaca = () => {
             setPlacaInfo(dataPlaca)
         }
     }, [dataPlaca]);
-    
-    // mock de estudantes só pra layout (depois você substitui pelo backend)
+
     const estudantes = [
         { id: 1, nome: "Maria Silva" },
         { id: 2, nome: "João Souza" },
@@ -66,31 +65,26 @@ const VisualizadorPlaca = () => {
 
   return (
     <Box h="100vh" overflowY="auto" p={8}>
-      {/* seta de voltar */}
       <Flex align="center" mb={4}>
-        <IconButton onClick={()=>goBack()} rounded={"full"} size={"xl"} variant={"ghost"} aria-label="Voltar" bgColor={EURECA_COLORS.AZUL_MEDIO}> 
+        <IconButton onClick={()=>goBack()} size={"xl"} variant={"ghost"} aria-label="Voltar" bgColor={EURECA_COLORS.AZUL_MEDIO}> 
             <LuChevronLeft />
         </IconButton>
       </Flex>
 
-      {/* Card principal */}
       <Center>
         <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="70vh">
             {isPlacaLoading && isEstudantesLoading && isSessoesLoading? (
                 <Text>Carregando...</Text>
             ) : (
                 <CardBody>
-                    {/* Nome da turma */}
                     <Center>
                     <Text fontSize="2xl" fontWeight="bold">
                         Nome da Turma
                     </Text>
                     </Center>
 
-                    {/* linha separadora */}
                     <Separator my={4} />
 
-                    {/* Avatares dos estudantes */}
                     <SimpleGrid columns={5} mt={-3}>
                     <For each={estudantes}>
                         {(estudante) => (

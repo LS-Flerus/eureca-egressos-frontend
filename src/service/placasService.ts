@@ -1,7 +1,7 @@
 import { ENDPOINTS } from "@/util/constants";
-import { axiosBackend } from "./axios";
-import { Placa } from "@/interfaces/Models";
-import { FiltersPayload } from "@/interfaces/ServicePayloads";
+import { axiosBackend, axiosDAS } from "./axios";
+import { Curso, Placa } from "@/interfaces/Models";
+import { CreatePlaquePayload, FiltersPayload } from "@/interfaces/ServicePayloads";
 import { PlacaResponse } from "@/interfaces/ServiceResponses";
 
 export const getPlacasByFilter = async(payload: FiltersPayload) => {
@@ -34,4 +34,32 @@ export const getAllPlacas = async() => {
         `/${ENDPOINTS.PLACAS_ALL}`
     )
     return data;
+}
+
+export const createPlacasEspecificas = async(parameters: {periodos: string, codigoDeCurso: string}) => {
+    const listaPeriodos = parameters.periodos.split(',');
+    const requisicaoCursos = await axiosDAS.get<Curso[]> (
+            `/${ENDPOINTS.CURSOS}`,
+            {params:{
+                curso: parameters.codigoDeCurso
+            }}
+        )
+    const curso = requisicaoCursos.data[0];
+
+    for(let periodoAtual of listaPeriodos) {
+        let payload: CreatePlaquePayload = {
+            courseCode:  parameters.codigoDeCurso,
+            semester: periodoAtual,
+            className: "[SEM NOME]",
+            campus: curso.campus,
+            approved: false,
+            toApprove: false
+        } 
+        await axiosBackend.post(
+            `/${ENDPOINTS.PLACAS_CRIAR}`,
+            payload
+        )
+    }
+    
+    return "Operação concluída"
 }

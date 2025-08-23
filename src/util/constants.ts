@@ -1,9 +1,13 @@
 export const ENDPOINTS = {
     CAMPI: "campi",
     CURSOS: "cursos",
+
     PLACAS_FILTRO: "plaque/getByFilter",
     PLACAS_ID: "plaque/getById",
     PLACAS_ALL: "plaque/getAll",
+    PLACAS_CRIAR: "",
+    PLACAS_CRIAR_FALTANTES: "",
+
     ESTUDANTES_PLACA: "students/getAllByPlaqueId",
     SESSOES_PLACA: "plaqueSessions/getAllByPlaque"
 }
