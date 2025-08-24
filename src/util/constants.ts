@@ -7,6 +7,7 @@ export const ENDPOINTS = {
     PLACAS_ALL: "plaque/getAll",
     PLACAS_CRIAR: "",
     PLACAS_CRIAR_FALTANTES: "",
+    PLACAS_POR_CURSO: "plaque/getByCourseCode",
 
     ESTUDANTES_PLACA: "students/getAllByPlaqueId",
     SESSOES_PLACA: "plaqueSessions/getAllByPlaque",

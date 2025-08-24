@@ -1,28 +1,51 @@
-import { Box, Button, Center, Flex, For, Grid, GridItem, IconButton, Image, Input, SimpleGrid, Spacer, Text} from "@chakra-ui/react";
+import { Box, Button, Flex, For, Grid, GridItem, Image, Input, SimpleGrid, Text} from "@chakra-ui/react";
 import { CardBody, CardRoot } from "@chakra-ui/react/card";
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
-import { useRef, useState } from "react";
-import FiltroCurso from "@/components/home/filtros/FiltroCurso";
-import FiltroPeriodo from "@/components/home/filtros/FiltroPeriodo";
-import FiltroCampus from "@/components/home/filtros/FiltroCampus";
-import FiltroNomes from "@/components/home/filtros/FiltroNomes";
+import { useEffect, useState } from "react";
 import { CardPlaca } from "@/components/home/CardPlaca";
 import { GetEurecaProfileResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
-import { useMutation } from "@tanstack/react-query";
-import { createPlacasEspecificas, getPlacasByFilter } from "@/service/placasService";
-import { LuChevronLeft } from "react-icons/lu";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createPlacasEspecificas, getPlacasByCurso, getPlacasByFilter } from "@/service/placasService";
+import { CardPlacaCoordinator } from "@/components/coordinatorHome/CardPlacaCoordinatorHome";
+import { useNavigate } from "react-router-dom";
 
 const CoordinatorHome = () => {
 
-    const [resultsPlacasCriadas, setResultsPlacasCriadas] = useState<PlacaResponse[] | null>(null);
+    const navigate = useNavigate();
+
+    const [resultsPlacasCriadas, setResultsPlacasCriadas] = useState<PlacaResponse[]>([]);
+    const [placasAprovadas, setPlacasAprovadas] = useState<PlacaResponse[]>([]);
+    const [placasSeremAprovadas, setPlacasSeremAprovadas] = useState<PlacaResponse[]>([]);
     const [listaPeriodosParaCriarPlacas, setListaPeriodosParaCriarPlacas] = useState<string>();
 
-    const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
+    const {data: dataPlacasCriadas, isLoading: isPlacasCriadasLoading} = useQuery({
+        queryKey: ["dataPlacasCriadas"],
+        queryFn: async () => {
+            const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
+            const courseCode = String(eurecaProfile.attributes.code)
+            const todasPlacas = await getPlacasByCurso(courseCode)
+            const placasAprovadas = todasPlacas.filter((p: PlacaResponse) => p.approved);
+            setPlacasAprovadas(placasAprovadas)
+            const placasSeremAprovadas = todasPlacas.filter((p: PlacaResponse) => p.toAprove);
+            setPlacasSeremAprovadas(placasSeremAprovadas)
 
+            return todasPlacas;
+        }
+    })
+
+    useEffect(() => {
+        if (dataPlacasCriadas) {
+            setResultsPlacasCriadas(dataPlacasCriadas);
+            
+        }
+    }, [dataPlacasCriadas]);
+
+    
     const createSpecificPlaques = useMutation({
         mutationKey: ["getCreatedPlaquesByFilter"],
         mutationFn: createPlacasEspecificas,
         onSuccess: async (data) => {
+            const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
             const courseCode = String(eurecaProfile.attributes.code)
             const placasCriadas = await getPlacasByFilter({courseCode: courseCode})
             setResultsPlacasCriadas(placasCriadas);
@@ -33,10 +56,16 @@ const CoordinatorHome = () => {
     });
     
     const handleCreatePlacasEspecificas = async () => {
+        const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
         const courseCode = String(eurecaProfile.attributes.code)
         createSpecificPlaques.mutate({periodos: listaPeriodosParaCriarPlacas, codigoDeCurso: courseCode})
     };
 
+    const handleLogOut = () => {
+        sessionStorage.removeItem(SESSION_STORAGE.EURECA_PROFILE);
+        sessionStorage.removeItem(SESSION_STORAGE.EURECA_TOKEN);
+        navigate("/egressos/")
+    }
 
     return (
         <>
@@ -46,7 +75,7 @@ const CoordinatorHome = () => {
                     <Flex pl="8vh" gap="4" align="center">
 
                     </Flex>
-                    <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO}>Sair</Button>
+                    <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO} onClick={handleLogOut}>Sair</Button>
                 </Flex>
                 <Box mt={6} h="50vh">
                     <Grid templateColumns={"1fr 1fr"} gap={4} mt={6}>
@@ -56,12 +85,12 @@ const CoordinatorHome = () => {
                                     <Text fontSize="lg" fontWeight="bold" mb={4}>
                                         Placas a serem aprovadas:
                                     </Text>
-                                    {resultsPlacasCriadas === null ? (
+                                    {isPlacasCriadasLoading ? (
                                         <Text>Carregando...</Text>
-                                    ) : resultsPlacasCriadas.length > 0 ? (
-                                        <SimpleGrid columns={4} px={2} gapX={2} justifyItems={"stretch"}>
-                                            <For each={resultsPlacasCriadas}>
-                                                {(item) => <CardPlaca placa={item}></CardPlaca>}
+                                    ) : resultsPlacasCriadas && resultsPlacasCriadas.length > 0 ? (
+                                        <SimpleGrid columns={2} px={2} gapX={2} justifyItems="stretch">
+                                            <For each={placasSeremAprovadas}>
+                                                {(item) => <CardPlacaCoordinator placa={item} />}
                                             </For>
                                         </SimpleGrid>
                                     ) : (
@@ -94,12 +123,12 @@ const CoordinatorHome = () => {
                                     <Text fontSize="lg" fontWeight="bold" mb={4}>
                                         Placas aprovadas:
                                     </Text>
-                                    {resultsPlacasCriadas === null ? (
+                                    {isPlacasCriadasLoading ? (
                                         <Text>Carregando...</Text>
-                                    ) : resultsPlacasCriadas.length > 0 ? (
-                                        <SimpleGrid columns={4} px={2} gapX={2} justifyItems={"stretch"}>
-                                            <For each={resultsPlacasCriadas}>
-                                                {(item) => <CardPlaca placa={item}></CardPlaca>}
+                                    ) : resultsPlacasCriadas && resultsPlacasCriadas.length > 0 ? (
+                                        <SimpleGrid columns={2} px={2} gapX={2} justifyItems="stretch">
+                                            <For each={placasAprovadas}>
+                                                {(item) => <CardPlacaCoordinator placa={item} />}
                                             </For>
                                         </SimpleGrid>
                                     ) : (
@@ -114,12 +143,12 @@ const CoordinatorHome = () => {
                                     <Text fontSize="lg" fontWeight="bold" mb={4}>
                                         Placas criadas:
                                     </Text>
-                                    {resultsPlacasCriadas === null ? (
+                                    {isPlacasCriadasLoading ? (
                                         <Text>Carregando...</Text>
-                                    ) : resultsPlacasCriadas.length > 0 ? (
-                                        <SimpleGrid columns={4} px={2} gapX={2} justifyItems={"stretch"}>
+                                    ) : resultsPlacasCriadas && resultsPlacasCriadas.length > 0 ? (
+                                        <SimpleGrid columns={2} px={2} gapX={2} justifyItems="stretch">
                                             <For each={resultsPlacasCriadas}>
-                                                {(item) => <CardPlaca placa={item}></CardPlaca>}
+                                                {(item) => <CardPlacaCoordinator placa={item} />}
                                             </For>
                                         </SimpleGrid>
                                     ) : (

@@ -1,7 +1,6 @@
 import { GetTokenPayload } from "@/interfaces/ServicePayloads";
 import { axiosAS } from "./axios";
 import { GetEurecaProfileResponse, GetTokenResponse } from "@/interfaces/ServiceResponses";
-import { SESSION_STORAGE } from "@/util/constants";
 
 export const getToken = async (credenciais: GetTokenPayload) => {
     const {username, password} = credenciais;

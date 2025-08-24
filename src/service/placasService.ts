@@ -17,6 +17,19 @@ export const getPlacasByFilter = async(payload: FiltersPayload) => {
     return data;
 }
 
+export const getPlacasByCurso = async(courseCode: string) => {
+
+    const { data } = await axiosBackend.get<PlacaResponse[]> (
+        `/${ENDPOINTS.PLACAS_POR_CURSO}`,
+        { 
+            params: {
+                courseCode: courseCode
+            }
+        }
+    )
+    return data;
+}
+
 export const getPlacasById = async(id: string) => {
     const { data } = await axiosBackend.get<PlacaResponse> (
         `/${ENDPOINTS.PLACAS_ID}`,
