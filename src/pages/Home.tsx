@@ -19,10 +19,6 @@ const Home = () => {
     const [showResultsCard, setShowResultsCard] = useState(false);
     const resultsRef = useRef<HTMLDivElement | null>(null);
     const [,forceUpdate] = useReducer(x=>x+1,0);
-
-    const handleLoginButton = async () => {
-
-    }
   
     const handleSubmitButton = async () => {
         const payload: FiltersPayload = {
@@ -63,7 +59,7 @@ const Home = () => {
                             <Image src="src/assets/escudo-ufcg.png" />
                             <Image src="src/assets/eureca_egressos_logo.png" />
                         </Flex>
-                        <LoginPopUp handleClose={forceUpdate}/>
+                        <LoginPopUp />
                     </Flex>
 
                     <Box display={"flex"} pt={"4vh"} spaceX={"24"}>

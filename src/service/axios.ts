@@ -76,7 +76,7 @@ axiosDAS.interceptors.response.use(
   }
 );
 
-const eureca_as = `https://eureca.lsd.ufcg.edu.br/as-sig/`
+const eureca_as = `https://eureca.lsd.ufcg.edu.br/as/`
 
 export const axiosAS = axios.create({
   baseURL: eureca_as,

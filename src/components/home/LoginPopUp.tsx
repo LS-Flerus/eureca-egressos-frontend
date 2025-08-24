@@ -6,16 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import { toaster, Toaster } from "../ui/toaster";
 import { getProfile, getToken } from "@/service/eurecaService";
 import { authenticateUser } from "@/service/userService";
-
-export interface LoginDialogProps{
-  handleClose?: (open: boolean) => void;
-}
+import { useNavigate } from "react-router-dom";
   
-export const LoginPopUp = (
-  {
-    handleClose
-  } : LoginDialogProps
-) => {
+export const LoginPopUp = () => {
+
+    const navigate = useNavigate();
 
     const [passwordvalue,setPasswordValue] = useState("");
     const [loginvalue,setLoginValue] = useState("");
@@ -28,6 +23,8 @@ export const LoginPopUp = (
             checkEurecaProfileMutation.mutate(data);
         },
         onError: (error) => {
+          console.log(error)
+          alert('oi?')
           checkEgressosUserMutation.mutate({login: loginvalue, senha:passwordvalue});
         },
     });
@@ -37,6 +34,7 @@ export const LoginPopUp = (
         mutationFn: getProfile,
         onSuccess: (data) => {
           sessionStorage.setItem(SESSION_STORAGE.EURECA_PROFILE, JSON.stringify(data))
+          navigate("/egressos/coordenador")
         },
         onError: (error) => {
           console.log(error);

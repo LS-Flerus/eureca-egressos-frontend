@@ -7,7 +7,7 @@ import FiltroPeriodo from "@/components/home/filtros/FiltroPeriodo";
 import FiltroCampus from "@/components/home/filtros/FiltroCampus";
 import FiltroNomes from "@/components/home/filtros/FiltroNomes";
 import { CardPlaca } from "@/components/home/CardPlaca";
-import { PlacaResponse } from "@/interfaces/ServiceResponses";
+import { GetEurecaProfileResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
 import { useMutation } from "@tanstack/react-query";
 import { createPlacasEspecificas, getPlacasByFilter } from "@/service/placasService";
 import { LuChevronLeft } from "react-icons/lu";
@@ -17,11 +17,14 @@ const CoordinatorHome = () => {
     const [resultsPlacasCriadas, setResultsPlacasCriadas] = useState<PlacaResponse[] | null>(null);
     const [listaPeriodosParaCriarPlacas, setListaPeriodosParaCriarPlacas] = useState<string>();
 
+    const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
+
     const createSpecificPlaques = useMutation({
         mutationKey: ["getCreatedPlaquesByFilter"],
         mutationFn: createPlacasEspecificas,
         onSuccess: async (data) => {
-            const placasCriadas = await getPlacasByFilter({courseCode: "14102100"})
+            const courseCode = String(eurecaProfile.attributes.code)
+            const placasCriadas = await getPlacasByFilter({courseCode: courseCode})
             setResultsPlacasCriadas(placasCriadas);
         },
         onError: (error) => {
@@ -30,7 +33,8 @@ const CoordinatorHome = () => {
     });
     
     const handleCreatePlacasEspecificas = async () => {
-        createSpecificPlaques.mutate({periodos: listaPeriodosParaCriarPlacas, codigoDeCurso: "14102100"})
+        const courseCode = String(eurecaProfile.attributes.code)
+        createSpecificPlaques.mutate({periodos: listaPeriodosParaCriarPlacas, codigoDeCurso: courseCode})
     };
 
 
