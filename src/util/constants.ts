@@ -9,7 +9,9 @@ export const ENDPOINTS = {
     PLACAS_CRIAR_FALTANTES: "",
 
     ESTUDANTES_PLACA: "students/getAllByPlaqueId",
-    SESSOES_PLACA: "plaqueSessions/getAllByPlaque"
+    SESSOES_PLACA: "plaqueSessions/getAllByPlaque",
+
+    LOGIN: "authentication/authenticate"
 }
 
 export const EURECA_COLORS = {
@@ -28,7 +30,9 @@ export const SESSION_STORAGE = {
     PERIODO_INICIO: "periodoInicio",
     PERIODO_FIM: "periodoFim",
     NOME_TURMA: "nomeTurma",
-    NOME_ALUNO: "nomeAluno"
+    NOME_ALUNO: "nomeAluno",
+    EURECA_TOKEN: "eurecaToken",
+    EURECA_PROFILE: "eurecaProfile"
 }
 
 export const DIMENSOES = {

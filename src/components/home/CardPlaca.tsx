@@ -32,7 +32,7 @@ export const CardPlaca = ({
             <Separator></Separator>
             <CardBody pt={"1"} pl={"2"}>
                 <Text lineClamp={1} fontSize={"sm"}>Campus: {MAPEAMENTO_CAMPUS[placa.campus+'']}</Text>
-                <Text lineClamp={1} fontSize={"sm"}>Curso: {placa.className}</Text>
+                <Text lineClamp={1} fontSize={"sm"}>Curso: {placa.courseCode}</Text>
                 <Text lineClamp={1} fontSize={"sm"}>Periodo de conclusão: {placa.semester}</Text>
             </CardBody>
         </CardRoot>

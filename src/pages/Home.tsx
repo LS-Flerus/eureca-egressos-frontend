@@ -1,7 +1,7 @@
 import { Box, Button, Center, Flex, For, Grid, Image, SimpleGrid, Spacer, Text} from "@chakra-ui/react";
 import { CardBody, CardRoot } from "@chakra-ui/react/card";
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
-import { useRef, useState } from "react";
+import { useReducer, useRef, useState } from "react";
 import FiltroCurso from "@/components/home/filtros/FiltroCurso";
 import FiltroPeriodo from "@/components/home/filtros/FiltroPeriodo";
 import FiltroCampus from "@/components/home/filtros/FiltroCampus";
@@ -11,12 +11,18 @@ import { getPlacasByFilter } from "@/service/placasService";
 import { FiltersPayload } from "@/interfaces/ServicePayloads";
 import { CardPlaca } from "@/components/home/CardPlaca";
 import { PlacaResponse } from "@/interfaces/ServiceResponses";
+import { LoginPopUp } from "@/components/home/LoginPopUp";
 
 const Home = () => {
 
     const [results, setResults] = useState<PlacaResponse[] | null>(null);
     const [showResultsCard, setShowResultsCard] = useState(false);
     const resultsRef = useRef<HTMLDivElement | null>(null);
+    const [,forceUpdate] = useReducer(x=>x+1,0);
+
+    const handleLoginButton = async () => {
+
+    }
   
     const handleSubmitButton = async () => {
         const payload: FiltersPayload = {
@@ -57,7 +63,7 @@ const Home = () => {
                             <Image src="src/assets/escudo-ufcg.png" />
                             <Image src="src/assets/eureca_egressos_logo.png" />
                         </Flex>
-                        <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO}>Login</Button>
+                        <LoginPopUp handleClose={forceUpdate}/>
                     </Flex>
 
                     <Box display={"flex"} pt={"4vh"} spaceX={"24"}>

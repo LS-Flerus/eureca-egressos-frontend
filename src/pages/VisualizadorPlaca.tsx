@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPlacasById } from "@/service/placasService";
 import { useEffect, useState } from "react";
-import { PlacaResponse } from "@/interfaces/ServiceResponses";
+import { EstudanteResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
 import { getEstudatesByPlacaId } from "@/service/estudantesService";
 import { getSessoesByPlacaId } from "@/service/sessoesPlacaService";
 
@@ -29,9 +29,13 @@ const VisualizadorPlaca = () => {
 
     const {data: dataEstudantes, isLoading: isEstudantesLoading} = useQuery({
         queryKey: ["dataEstudanteByPlacaId", {id: id}],
-        queryFn: ({ queryKey }) => {
+        queryFn: async ({ queryKey }) => {
             const [_key, { id }] = queryKey as [string, {id:string} ];
-            return getEstudatesByPlacaId(id)
+            const estudantes = await getEstudatesByPlacaId(id);
+
+            return estudantes.sort((a: EstudanteResponse, b: EstudanteResponse) =>
+                a.name.localeCompare(b.name)
+            );
         }
     })
 
@@ -49,15 +53,6 @@ const VisualizadorPlaca = () => {
             setPlacaInfo(dataPlaca)
         }
     }, [dataPlaca]);
-
-    const estudantes = [
-        { id: 1, nome: "Maria Silva" },
-        { id: 2, nome: "João Souza" },
-        { id: 3, nome: "Ana Costa" },
-        { id: 4, nome: "Pedro Oliveira" },
-        { id: 5, nome: "Lucas Lima" },
-        { id: 6, nome: "Carla Santos" },
-    ];
 
     function goBack(){
         navigate(`/egressos/`)
@@ -79,19 +74,19 @@ const VisualizadorPlaca = () => {
                 <CardBody>
                     <Center>
                     <Text fontSize="2xl" fontWeight="bold">
-                        Nome da Turma
+                        {placaInfo ? placaInfo.className : "Carregando..."}
                     </Text>
                     </Center>
 
                     <Separator my={4} />
 
                     <SimpleGrid columns={5} mt={-3}>
-                    <For each={estudantes}>
+                    <For each={dataEstudantes}>
                         {(estudante) => (
                         <Center flexDir="column">
                             <Image
                             src={escudoUfcg}
-                            alt={estudante.nome}
+                            alt={estudante.name}
                             boxSize="200px"
                             borderRadius="full"
                             objectFit="cover"
@@ -99,7 +94,7 @@ const VisualizadorPlaca = () => {
                             mt={6}
                             />
                             <Text mt={2} textAlign="center">
-                            {estudante.nome}
+                            {estudante.name}
                             </Text>
                         </Center>
                         )}

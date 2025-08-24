@@ -17,3 +17,13 @@ export type CreatePlaquePayload = {
   approved: boolean,
   toApprove: boolean
 }
+
+export type GetTokenPayload = {
+    username: string,
+    password: string
+}
+
+export type LoginPayload = {
+    login: string,
+    senha: string
+}

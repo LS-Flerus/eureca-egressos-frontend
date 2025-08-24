@@ -24,3 +24,19 @@ export type SessoesPlacaResponse = {
     content: string;
     isList: boolean;
 }
+
+export type GetTokenResponse = {
+    token: string
+}
+
+export type GetEurecaProfileResponse = {
+    id: string,
+    name: string,
+    identityProviderId: string,
+    attributes: {
+      code: number,
+      name: string,
+      type: string,
+      email: string
+    }
+}
