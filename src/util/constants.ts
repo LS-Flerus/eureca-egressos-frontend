@@ -8,6 +8,7 @@ export const ENDPOINTS = {
     PLACAS_CRIAR: "",
     PLACAS_CRIAR_FALTANTES: "",
     PLACAS_POR_CURSO: "plaque/getByCourseCode",
+    PLACA_UPDATE: "plaque/update",
 
     ESTUDANTES_PLACA: "students/getAllByPlaqueId",
     SESSOES_PLACA: "plaqueSessions/getAllByPlaque",

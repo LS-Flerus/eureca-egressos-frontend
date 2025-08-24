@@ -26,7 +26,8 @@ const CoordinatorHome = () => {
             const todasPlacas = await getPlacasByCurso(courseCode)
             const placasAprovadas = todasPlacas.filter((p: PlacaResponse) => p.approved);
             setPlacasAprovadas(placasAprovadas)
-            const placasSeremAprovadas = todasPlacas.filter((p: PlacaResponse) => p.toAprove);
+            const placasSeremAprovadas = todasPlacas.filter((p: PlacaResponse) => p.toApprove);
+            console.log(todasPlacas)
             setPlacasSeremAprovadas(placasSeremAprovadas)
 
             return todasPlacas;

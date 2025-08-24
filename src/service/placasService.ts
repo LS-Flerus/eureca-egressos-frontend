@@ -1,7 +1,7 @@
 import { ENDPOINTS } from "@/util/constants";
 import { axiosBackend, axiosDAS } from "./axios";
 import { Curso, Placa } from "@/interfaces/Models";
-import { CreatePlaquePayload, FiltersPayload } from "@/interfaces/ServicePayloads";
+import { CreatePlaquePayload, FiltersPayload, UpdatePlaquePayload } from "@/interfaces/ServicePayloads";
 import { PlacaResponse } from "@/interfaces/ServiceResponses";
 
 export const getPlacasByFilter = async(payload: FiltersPayload) => {
@@ -75,4 +75,18 @@ export const createPlacasEspecificas = async(parameters: {periodos: string, codi
     }
     
     return "Operação concluída"
+}
+
+export const updatePlaque = async(updatedPayload: UpdatePlaquePayload)=> {
+    const { data } = await axiosBackend.put<PlacaResponse> (
+        `/${ENDPOINTS.PLACA_UPDATE}`,
+        updatedPayload,
+        {
+            params: {
+                id: updatedPayload.id
+            }
+        }
+    )
+
+    return data;
 }

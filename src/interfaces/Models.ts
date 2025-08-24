@@ -10,7 +10,7 @@ export type Placa = {
     courseCode: string,
     className: string,
     approved: boolean,
-    toAprove: boolean,
+    toApprove: boolean,
 }
 
 export type Curso = {

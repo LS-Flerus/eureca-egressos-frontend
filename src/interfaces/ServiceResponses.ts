@@ -4,7 +4,7 @@ export type PlacaResponse = {
     courseCode: string,
     className: string,
     approved: boolean,
-    toAprove: boolean,
+    toApprove: boolean,
     campus: number
 }
 

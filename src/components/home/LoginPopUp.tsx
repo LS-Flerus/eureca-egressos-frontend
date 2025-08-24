@@ -24,17 +24,24 @@ export const LoginPopUp = () => {
         },
         onError: (error) => {
           console.log(error)
-          alert('oi?')
           checkEgressosUserMutation.mutate({login: loginvalue, senha:passwordvalue});
         },
     });
 
     const checkEurecaProfileMutation = useMutation({
-        mutationKey: ["getToken"],
+        mutationKey: ["getProfile"],
         mutationFn: getProfile,
         onSuccess: (data) => {
-          sessionStorage.setItem(SESSION_STORAGE.EURECA_PROFILE, JSON.stringify(data))
-          navigate("/egressos/coordenador")
+          if(data.attributes.type != "Curso") {
+            toaster.create({
+              title: "Não autorizado!",
+              description: "Se você for de uma comissão de formatura, utilize as credenciais dadas pela sua coordenação",
+              type: "error"
+            });
+          } else {
+            sessionStorage.setItem(SESSION_STORAGE.EURECA_PROFILE, JSON.stringify(data))
+            navigate("/egressos/coordenador")
+          }
         },
         onError: (error) => {
           console.log(error);

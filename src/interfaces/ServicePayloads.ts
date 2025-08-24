@@ -18,6 +18,16 @@ export type CreatePlaquePayload = {
   toApprove: boolean
 }
 
+export type UpdatePlaquePayload = {
+  id?: string,
+  courseCode?: string,
+  semester?: string,
+  className?: string,
+  campus?: number,
+  approved?: boolean,
+  toApprove?: boolean
+}
+
 export type GetTokenPayload = {
     username: string,
     password: string

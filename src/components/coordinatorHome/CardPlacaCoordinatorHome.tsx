@@ -17,7 +17,7 @@ export const CardPlacaCoordinator = ({
     function navigatePaginaPlaca() {
         sessionStorage.setItem('placaVisualizadaId', placa.id);
         console.log(placa.id)
-        navigate("/egressos/placa/"+placa.id);
+        navigate("/egressos/coordenador/placa/"+placa.id);
     }
 
     const [img,setImg] = useState("")
