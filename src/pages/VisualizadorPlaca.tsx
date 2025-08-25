@@ -20,7 +20,7 @@ const VisualizadorPlaca = () => {
     const [placaInfo, setPlacaInfo] = useState<PlacaResponse|null>(null)
 
     const {data: dataPlaca, isLoading: isPlacaLoading} = useQuery({
-        queryKey: ["dataPlacaById", {id: id}],
+        queryKey: ["dataPlacaByIdComissao"],
         queryFn: ({ queryKey }) => {
             const [_key, { id }] = queryKey as [string, {id:string} ];
             return getPlacasById(id)

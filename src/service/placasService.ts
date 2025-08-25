@@ -31,6 +31,7 @@ export const getPlacasByCurso = async(courseCode: string) => {
 }
 
 export const getPlacasById = async(id: string) => {
+    console.log(id)
     const { data } = await axiosBackend.get<PlacaResponse> (
         `/${ENDPOINTS.PLACAS_ID}`,
         {
