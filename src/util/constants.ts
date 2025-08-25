@@ -17,7 +17,8 @@ export const ENDPOINTS = {
 
     USUARIOS_POR_CURSO: "users/getAllByCourseCode",
     DELETAR_USUARIO: "users/delete",
-    CRIAR_USUARIO: "users/create"
+    CRIAR_USUARIO: "users/create",
+    USUARIO_LOGADO: "users/getLoggedUser"
 }
 
 export const EURECA_COLORS = {
@@ -38,7 +39,9 @@ export const SESSION_STORAGE = {
     NOME_TURMA: "nomeTurma",
     NOME_ALUNO: "nomeAluno",
     EURECA_TOKEN: "eurecaToken",
-    EURECA_PROFILE: "eurecaProfile"
+    EURECA_PROFILE: "eurecaProfile",
+    EGRESSOS_TOKEN: "egressosToken",
+    EGRESSOS_PROFILE: "egressosProfile",
 }
 
 export const DIMENSOES = {

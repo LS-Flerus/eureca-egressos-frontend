@@ -1,3 +1,4 @@
+import { SESSION_STORAGE } from "@/util/constants";
 import axios, { AxiosError } from "axios";
 
 const api_url = "http://localhost:8080/" //"https://eureca.lsd.ufcg.edu.br/egressos-backend/"
@@ -12,9 +13,9 @@ export const axiosBackend = axios.create({
 });
 
 axiosBackend.interceptors.request.use((config) => {
-  let token = sessionStorage.getItem("token")
+  let token = sessionStorage.getItem(SESSION_STORAGE.EGRESSOS_TOKEN)
   if (token) {
-    config.headers.token = `${token}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;
@@ -26,7 +27,7 @@ axiosBackend.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error?.response?.status === 401) {
-      window.location.href = "/egressos/";
+      //window.location.href = "/egressos/";
     }
     return Promise.reject(error);
   }
@@ -92,7 +93,7 @@ axiosAS.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error?.response?.status === 401) {
-      window.location.href = "/egressos/";
+      //window.location.href = "/egressos/";
     }
     return Promise.reject(error);
   }

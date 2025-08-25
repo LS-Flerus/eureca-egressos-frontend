@@ -12,7 +12,14 @@ export const authenticateUser = async (credentials: LoginPayload) => {
         {},
         { headers: { Authorization: authorization }, withCredentials:true }
     )
-    sessionStorage.setItem("egressosToken", data)
+    return data
+}
+
+export const getLoggedUser = async() => {
+    const { data } = await axiosBackend.get<GetUsuariosResponse[]> (
+        `/${ENDPOINTS.USUARIO_LOGADO}`,
+    )
+    return data;
 }
 
 export const getUsuariosByCurso = async(courseCode: string) => {

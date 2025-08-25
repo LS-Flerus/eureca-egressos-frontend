@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toaster, Toaster } from "../ui/toaster";
 import { getProfile, getToken } from "@/service/eurecaService";
-import { authenticateUser } from "@/service/userService";
+import { authenticateUser, getLoggedUser } from "@/service/userService";
 import { useNavigate } from "react-router-dom";
   
 export const LoginPopUp = () => {
@@ -24,7 +24,7 @@ export const LoginPopUp = () => {
         },
         onError: (error) => {
           console.log(error)
-          checkEgressosUserMutation.mutate({login: loginvalue, senha:passwordvalue});
+          checkEgressosTokenMutation.mutate({login: loginvalue, senha:passwordvalue});
         },
     });
 
@@ -53,11 +53,25 @@ export const LoginPopUp = () => {
         },
     });
 
-    const checkEgressosUserMutation = useMutation({
-        mutationKey: ["getToken"],
+    const checkEgressosTokenMutation = useMutation({
+        mutationKey: ["getEgressosToken"],
         mutationFn: authenticateUser,
         onSuccess: (data) => {
-          sessionStorage.setItem(SESSION_STORAGE.EURECA_PROFILE, JSON.stringify(data))
+            sessionStorage.setItem(SESSION_STORAGE.EGRESSOS_TOKEN,data);
+            checkEgressosUserMutation.mutate();
+        },
+        onError: (error) => {
+          console.log(error)
+          alert(1)
+        },
+    });
+
+    const checkEgressosUserMutation = useMutation({
+        mutationKey: ["getEgressosProfile"],
+        mutationFn: getLoggedUser,
+        onSuccess: (data) => {
+          sessionStorage.setItem(SESSION_STORAGE.EGRESSOS_PROFILE, JSON.stringify(data))
+          navigate("/egressos/comissao")
         },
         onError: (error) => {
           console.log(error);
@@ -66,6 +80,7 @@ export const LoginPopUp = () => {
             description: "Verifique suas credenciais ou tente novamente mais tarde",
             type: "error"
           });
+          alert(2)
         },
     });
 

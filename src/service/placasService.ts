@@ -65,7 +65,7 @@ export const createPlacasEspecificas = async(parameters: {periodos: string, codi
             semester: periodoAtual,
             className: "[SEM NOME]",
             campus: curso.campus,
-            approved: false,
+            approved: true,
             toApprove: false
         } 
         await axiosBackend.post(
