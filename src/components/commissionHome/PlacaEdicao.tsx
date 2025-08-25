@@ -4,12 +4,12 @@ import { LuChevronLeft } from "react-icons/lu";
 import { Separator } from "@chakra-ui/react";
 import escudoUfcg from "@/assets/escudo-ufcg-big.png"
 
-import { EURECA_COLORS } from "@/util/constants";
+import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPlacasById } from "@/service/placasService";
 import { useEffect, useState } from "react";
-import { EstudanteResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
+import { EstudanteResponse, GetUsuariosResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
 import { getEstudatesByPlacaId } from "@/service/estudantesService";
 import { getSessoesByPlacaId } from "@/service/sessoesPlacaService";
 
@@ -20,33 +20,25 @@ const PlacaEdicao = () => {
     const [placaInfo, setPlacaInfo] = useState<PlacaResponse|null>(null)
 
     const {data: dataPlaca, isLoading: isPlacaLoading} = useQuery({
-        queryKey: ["dataPlacaById", {id: id}],
-        queryFn: ({ queryKey }) => {
-            const [_key, { id }] = queryKey as [string, {id:string} ];
-            return getPlacasById(id)
+        queryKey: ["dataPlacaByIdComissao"],
+        queryFn: async() => {
+            const profile: GetUsuariosResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EGRESSOS_PROFILE));
+            return await getPlacasById(profile.plaqueId)
         }
     })
 
     const {data: dataEstudantes, isLoading: isEstudantesLoading} = useQuery({
-        queryKey: ["dataEstudanteByPlacaId", {id: id}],
-        queryFn: async ({ queryKey }) => {
-            const [_key, { id }] = queryKey as [string, {id:string} ];
-            const estudantes = await getEstudatesByPlacaId(id);
+        queryKey: ["dataEstudanteByPlacaIdComissao"],
+        queryFn: async () => {
+            const profile: GetUsuariosResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EGRESSOS_PROFILE));
+            const estudantes = await getEstudatesByPlacaId(profile.plaqueId);
 
+            console.log(estudantes)
             return estudantes.sort((a: EstudanteResponse, b: EstudanteResponse) =>
                 a.name.localeCompare(b.name)
             );
         }
     })
-
-    const {data: dataSessoes, isLoading: isSessoesLoading } = useQuery({
-        queryKey: ["dataSessoesByPlacaId", {id: id}],
-        queryFn: ({ queryKey }) => {
-            const [_key, { id }] = queryKey as [string, {id:string}];
-            return getSessoesByPlacaId(id)
-        }
-    })
-
 
     useEffect(() => {
         if(!!dataPlaca) {
@@ -62,8 +54,8 @@ const PlacaEdicao = () => {
     <Box h="100vh" overflowY="auto" p={8}>
 
       <Center>
-        <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="70vh">
-            {isPlacaLoading && isEstudantesLoading && isSessoesLoading? (
+        <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="50vh">
+            {isPlacaLoading && isEstudantesLoading ? (
                 <Text>Carregando...</Text>
             ) : (
                 <CardBody>

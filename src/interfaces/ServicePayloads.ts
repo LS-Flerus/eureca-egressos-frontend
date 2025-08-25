@@ -45,3 +45,10 @@ export type CreateUserPayload = {
   courseCode: string,
   plaqueId: string
 }
+
+export type CreatePlaqueSessionPayload = {
+  plaqueId: string,
+  name: string,
+  content: string,
+  isList: boolean
+}

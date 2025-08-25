@@ -11,7 +11,10 @@ export const ENDPOINTS = {
     PLACA_UPDATE: "plaque/update",
 
     ESTUDANTES_PLACA: "students/getAllByPlaqueId",
+
     SESSOES_PLACA: "plaqueSessions/getAllByPlaque",
+    CRIAR_SESSAO: "plaqueSessions/create",
+    DELETAR_SESSAO: "plaqueSessions/delete",
 
     LOGIN: "authentication/authenticate",
 

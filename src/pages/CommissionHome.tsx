@@ -4,6 +4,7 @@ import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useNavigate } from "react-router-dom";
 import { LuCamera, LuFolder, LuUser } from "react-icons/lu";
 import PlacaEdicao from "@/components/commissionHome/PlacaEdicao";
+import SessoesEdicao from "@/components/commissionHome/SessoesEdicao";
 
 const CommissionHome = () => {
 
@@ -58,7 +59,7 @@ const CommissionHome = () => {
                             <PlacaEdicao />
                         </Tabs.Content>
                         <Tabs.Content value="sessoes" mt={0}>
-
+                            <SessoesEdicao />
                         </Tabs.Content>
                         <Tabs.Content value="fotos" mt={0}>
 
