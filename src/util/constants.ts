@@ -5,7 +5,7 @@ export const ENDPOINTS = {
     PLACAS_FILTRO: "plaque/getByFilter",
     PLACAS_ID: "plaque/getById",
     PLACAS_ALL: "plaque/getAll",
-    PLACAS_CRIAR: "",
+    PLACAS_CRIAR: "plaque/create",
     PLACAS_CRIAR_FALTANTES: "",
     PLACAS_POR_CURSO: "plaque/getByCourseCode",
     PLACA_UPDATE: "plaque/update",
@@ -13,7 +13,11 @@ export const ENDPOINTS = {
     ESTUDANTES_PLACA: "students/getAllByPlaqueId",
     SESSOES_PLACA: "plaqueSessions/getAllByPlaque",
 
-    LOGIN: "authentication/authenticate"
+    LOGIN: "authentication/authenticate",
+
+    USUARIOS_POR_CURSO: "users/getAllByCourseCode",
+    DELETAR_USUARIO: "users/delete",
+    CRIAR_USUARIO: "users/create"
 }
 
 export const EURECA_COLORS = {

@@ -1,4 +1,4 @@
-import { ENDPOINTS } from "@/util/constants";
+import { ENDPOINTS, SESSION_STORAGE } from "@/util/constants";
 import { axiosBackend, axiosDAS } from "./axios";
 import { Curso, Placa } from "@/interfaces/Models";
 import { CreatePlaquePayload, FiltersPayload, UpdatePlaquePayload } from "@/interfaces/ServicePayloads";
@@ -70,7 +70,12 @@ export const createPlacasEspecificas = async(parameters: {periodos: string, codi
         } 
         await axiosBackend.post(
             `/${ENDPOINTS.PLACAS_CRIAR}`,
-            payload
+            payload,
+            {
+                headers: {
+                    "tokenAS": sessionStorage.getItem(SESSION_STORAGE.EURECA_TOKEN)
+                }
+            }
         )
     }
     

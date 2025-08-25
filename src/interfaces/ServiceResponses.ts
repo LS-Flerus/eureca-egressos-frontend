@@ -40,3 +40,12 @@ export type GetEurecaProfileResponse = {
       email: string
     }
 }
+
+export type GetUsuariosResponse = {
+    id: string,
+    login: string,
+    password: string,
+    name: string,
+    courseCode: string,
+    plaqueId: string
+  }
