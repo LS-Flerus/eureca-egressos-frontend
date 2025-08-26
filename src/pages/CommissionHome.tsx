@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { LuCamera, LuFolder, LuUser } from "react-icons/lu";
 import PlacaEdicao from "@/components/commissionHome/PlacaEdicao";
 import SessoesEdicao from "@/components/commissionHome/SessoesEdicao";
+import FotosEdicao from "@/components/commissionHome/FotosEdicao";
 
 const CommissionHome = () => {
 
@@ -62,7 +63,7 @@ const CommissionHome = () => {
                             <SessoesEdicao />
                         </Tabs.Content>
                         <Tabs.Content value="fotos" mt={0}>
-
+                            <FotosEdicao />
                         </Tabs.Content>
                     </Tabs.Root>
                 </Flex>

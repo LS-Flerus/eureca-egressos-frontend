@@ -21,7 +21,10 @@ export const ENDPOINTS = {
     USUARIOS_POR_CURSO: "users/getAllByCourseCode",
     DELETAR_USUARIO: "users/delete",
     CRIAR_USUARIO: "users/create",
-    USUARIO_LOGADO: "users/getLoggedUser"
+    USUARIO_LOGADO: "users/getLoggedUser",
+
+    GET_IMAGE_MONGO: "get",
+    UPLOAD_IMAGE_MONGO: "post"
 }
 
 export const EURECA_COLORS = {

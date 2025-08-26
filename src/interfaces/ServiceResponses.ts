@@ -49,3 +49,10 @@ export type GetUsuariosResponse = {
     courseCode: string,
     plaqueId: string
   }
+
+  export type GetPhotoResponse = {
+    id: string;
+    plaqueId: string;
+    photoId: string;
+    mainPhoto: boolean;
+  }
