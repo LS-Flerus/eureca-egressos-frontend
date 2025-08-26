@@ -23,8 +23,15 @@ export const ENDPOINTS = {
     CRIAR_USUARIO: "users/create",
     USUARIO_LOGADO: "users/getLoggedUser",
 
+    UPDATE_FOTO: "photos/update",
+    CREATE_FOTO: "photos/create",
+    DELETE_FOTO: "photos/delete",
+    GET_FOTO: "photos/getById",
+    GET_FOTO_PLACA: "photos/getAllByPlaque",
+
     GET_IMAGE_MONGO: "get",
-    UPLOAD_IMAGE_MONGO: "post"
+    UPLOAD_IMAGE_MONGO: "upload",
+    DELETE_IMAGE_MONGO: "delete"
 }
 
 export const EURECA_COLORS = {

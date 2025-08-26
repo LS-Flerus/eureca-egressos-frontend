@@ -1,11 +1,11 @@
 import { ENDPOINTS } from "@/util/constants";
 import { axiosBackend } from "./axios";
 import { GetPhotoResponse } from "@/interfaces/ServiceResponses";
-import { CreatePlaqueSessionPayload } from "@/interfaces/ServicePayloads";
+import { CreatePhotoPayload, CreatePlaqueSessionPayload, UpdatePhotoPayload } from "@/interfaces/ServicePayloads";
 
 export const getFotosByPlacaId = async(id: string) => {
     const { data } = await axiosBackend.get<GetPhotoResponse[]> (
-        `/${ENDPOINTS.SESSOES_PLACA}`,
+        `/${ENDPOINTS.GET_FOTO_PLACA}`,
         {
             params: {
                 plaqueId: id
@@ -15,9 +15,9 @@ export const getFotosByPlacaId = async(id: string) => {
     return data;
 }
 
-export const createFoto = async(payload: CreatePlaqueSessionPayload) => {
+export const createFoto = async(payload: CreatePhotoPayload) => {
     const { data } = await axiosBackend.post<GetPhotoResponse> (
-        `/${ENDPOINTS.CRIAR_SESSAO}`,
+        `/${ENDPOINTS.CREATE_FOTO}`,
         payload
     )
     return data;
@@ -25,11 +25,24 @@ export const createFoto = async(payload: CreatePlaqueSessionPayload) => {
 
 export const deleteFoto = async(id: string) => {
     const { data } = await axiosBackend.delete<string> (
-        `/${ENDPOINTS.DELETAR_SESSAO}`,
+        `/${ENDPOINTS.DELETE_FOTO}`,
         {
             params: {
                 id: id
             }
         }
     )
+}
+
+export const updateFoto = async(payload: UpdatePhotoPayload) => {
+    const { data } = await axiosBackend.put<GetPhotoResponse> (
+        `/${ENDPOINTS.UPDATE_FOTO}`,
+        payload,
+        {
+            params:{
+                id:payload.id
+            }
+        }
+    )
+    return data
 }

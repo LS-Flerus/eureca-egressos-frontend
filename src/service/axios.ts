@@ -33,7 +33,7 @@ axiosBackend.interceptors.response.use(
   }
 );
 
-const image_manager_url = "http://localhost:8080/"
+const image_manager_url = "http://localhost:8081/"
 
 export const axiosImageManager = axios.create({
   baseURL: image_manager_url,

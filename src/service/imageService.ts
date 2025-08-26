@@ -15,16 +15,33 @@ export const getImageFromMongoDB = async (id: string) => {
   }
 };
 
-export const uploadImageMongoDB = async (id: string) => {
+export const uploadImageMongoDB = async (img: string) => {
     try {
-    const { data } = await axiosImageManager.post(`/${ENDPOINTS.UPLOAD_IMAGE_MONGO}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return data.image;
+    const { data } = await axiosImageManager.post(`/${ENDPOINTS.UPLOAD_IMAGE_MONGO}`,
+        {img: img},
+        {
+            headers: {
+            "Content-Type": "application/json",
+            },
+        }
+    );
+    console.log(data.data)
+    return data.data;
   } catch (error) {
     console.error("Erro ao buscar imagem:", error);
+  }
+}
+
+export const deleteImageMongoDB = async (id: string) => {
+    try {
+        const { data } = await axiosImageManager.get(`/${ENDPOINTS.DELETE_IMAGE_MONGO}/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        return data.image;
+  } catch (error) {
+        console.error("Erro ao buscar imagem:", error);
   }
 }

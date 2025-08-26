@@ -52,3 +52,16 @@ export type CreatePlaqueSessionPayload = {
   content: string,
   isList: boolean
 }
+
+export type CreatePhotoPayload = {
+  plaqueId: string,
+  photoId: string,
+  mainPhoto: boolean
+}
+
+export type UpdatePhotoPayload = {
+  id: string,
+  plaqueId: string,
+  photoId: string,
+  mainPhoto: boolean
+}
