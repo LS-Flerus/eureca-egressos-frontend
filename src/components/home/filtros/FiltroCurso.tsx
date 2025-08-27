@@ -20,6 +20,7 @@ const FiltroCurso = () => {
 
     const cursosFiltrados = useMemo(() => {
         if(!isLoading && !!dataCursos){
+            sessionStorage.setItem(SESSION_STORAGE.CURSOS_RESPONSE,JSON.stringify(dataCursos))
             let cursos = [...dataCursos];
 
             if (search.trim()) {

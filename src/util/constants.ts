@@ -47,6 +47,7 @@ export const EURECA_COLORS = {
 export const SESSION_STORAGE = {
     CAMPI: "campi",
     CURSOS: "cursos",
+    CURSOS_RESPONSE: "cursosResponse",
     PERIODO_INICIO: "periodoInicio",
     PERIODO_FIM: "periodoFim",
     NOME_TURMA: "nomeTurma",

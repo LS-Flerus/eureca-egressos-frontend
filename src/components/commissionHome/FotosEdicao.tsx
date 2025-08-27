@@ -23,6 +23,8 @@ const FotosEdicao = () => {
     const [fotosSecundarias, setFotosSecundarias] = useState<GetPhotoResponse[]>()
     const [imgSecundarias, setImgSecundarias] = useState("")
 
+// -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
+
     const {data: dataAllPhotos, isLoading: isDataAllPhotosLoading} = useQuery({
         queryKey: ["dataGetAllPhotos"],
         queryFn: async () => {
@@ -37,8 +39,7 @@ const FotosEdicao = () => {
             return todasAsFotos;
         }
     })
-
-// -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
+    
     const getImagemPrincipalMutation = useMutation({
         mutationKey: ["fotoPrincipalDaPlaca"],
         mutationFn: getImageFromMongoDB,
@@ -57,10 +58,6 @@ const FotosEdicao = () => {
             }
         }
     }, [fotoPrincipal, isDataAllPhotosLoading]);
-
-    useEffect(() => {
-
-    }, []);
 
     const imagebase64 = async (file: any): Promise<string | ArrayBuffer | null | undefined> => {
         const reader = new FileReader()
