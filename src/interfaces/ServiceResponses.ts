@@ -43,16 +43,15 @@ export type GetEurecaProfileResponse = {
 
 export type GetUsuariosResponse = {
     id: string,
-    login: string,
-    password: string,
     name: string,
+    enrollment: string,
     courseCode: string,
     plaqueId: string
-  }
+}
 
-  export type GetPhotoResponse = {
+export type GetPhotoResponse = {
     id: string;
     plaqueId: string;
     photoId: string;
     mainPhoto: boolean;
-  }
+}

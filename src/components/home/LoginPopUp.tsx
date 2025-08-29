@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toaster, Toaster } from "../ui/toaster";
 import { getProfile, getToken } from "@/service/eurecaService";
-import { authenticateUser, getLoggedUser } from "@/service/userService";
+import { getUserByEnrollment } from "@/service/userService";
 import { useNavigate } from "react-router-dom";
   
 export const LoginPopUp = () => {
@@ -24,7 +24,11 @@ export const LoginPopUp = () => {
         },
         onError: (error) => {
           console.log(error)
-          checkEgressosTokenMutation.mutate({login: loginvalue, senha:passwordvalue});
+          toaster.create({
+            title: "Falha na autenticação",
+            description: "Verifique suas credenciais ou tente novamente mais tarde",
+            type: "error"
+          });
         },
     });
 
@@ -32,15 +36,17 @@ export const LoginPopUp = () => {
         mutationKey: ["getProfile"],
         mutationFn: getProfile,
         onSuccess: (data) => {
-          if(data.attributes.type != "Curso") {
+          if(data.attributes.type == "Curso") {
+            sessionStorage.setItem(SESSION_STORAGE.EURECA_PROFILE, JSON.stringify(data))
+            navigate("/egressos/coordenador")
+          } else if (data.attributes.type == "Aluno"){
+            checkEgressosUserMutation.mutate(data.id);
+          } else {
             toaster.create({
               title: "Não autorizado!",
               description: "Se você for de uma comissão de formatura, utilize as credenciais dadas pela sua coordenação",
               type: "error"
             });
-          } else {
-            sessionStorage.setItem(SESSION_STORAGE.EURECA_PROFILE, JSON.stringify(data))
-            navigate("/egressos/coordenador")
           }
         },
         onError: (error) => {
@@ -53,22 +59,9 @@ export const LoginPopUp = () => {
         },
     });
 
-    const checkEgressosTokenMutation = useMutation({
-        mutationKey: ["getEgressosToken"],
-        mutationFn: authenticateUser,
-        onSuccess: (data) => {
-            sessionStorage.setItem(SESSION_STORAGE.EGRESSOS_TOKEN,data);
-            checkEgressosUserMutation.mutate();
-        },
-        onError: (error) => {
-          console.log(error)
-          alert(1)
-        },
-    });
-
     const checkEgressosUserMutation = useMutation({
         mutationKey: ["getEgressosProfile"],
-        mutationFn: getLoggedUser,
+        mutationFn: getUserByEnrollment,
         onSuccess: (data) => {
           sessionStorage.setItem(SESSION_STORAGE.EGRESSOS_PROFILE, JSON.stringify(data))
           navigate("/egressos/comissao")

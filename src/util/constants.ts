@@ -1,6 +1,7 @@
 export const ENDPOINTS = {
     CAMPI: "campi",
     CURSOS: "cursos",
+    ESTUDANTE: "estudantes/estudante",
 
     PLACAS_FILTRO: "plaque/getByFilter",
     PLACAS_ID: "plaque/getById",
@@ -21,7 +22,7 @@ export const ENDPOINTS = {
     USUARIOS_POR_CURSO: "users/getAllByCourseCode",
     DELETAR_USUARIO: "users/delete",
     CRIAR_USUARIO: "users/create",
-    USUARIO_LOGADO: "users/getLoggedUser",
+    USUARIO_POR_MATRICULA: "users/getUserByEnrollment",
 
     UPDATE_FOTO: "photos/update",
     CREATE_FOTO: "photos/create",

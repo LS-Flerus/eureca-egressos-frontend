@@ -39,9 +39,8 @@ export type LoginPayload = {
 }
 
 export type CreateUserPayload = {
-  login: string,
-  password: string,
   name: string,
+  enrollment: string,
   courseCode: string,
   plaqueId: string
 }

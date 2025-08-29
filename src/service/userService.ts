@@ -3,21 +3,14 @@ import { CreateUserPayload, LoginPayload} from "../interfaces/ServicePayloads"
 import { axiosBackend } from "./axios";
 import { GetUsuariosResponse } from "@/interfaces/ServiceResponses";
 
-export const authenticateUser = async (credentials: LoginPayload) => {
-    const encodedCredentials: string = btoa(unescape(encodeURIComponent(`${credentials.login}:${credentials.senha}`)));
-    const authorization = `Basic ${encodedCredentials}`
-    console.log(authorization)
-    const { data } = await axiosBackend.post<string>(
-        `/${ENDPOINTS.LOGIN}`,
-        {},
-        { headers: { Authorization: authorization }, withCredentials:true }
-    )
-    return data
-}
-
-export const getLoggedUser = async() => {
+export const getUserByEnrollment = async(enrollment: string) => {
     const { data } = await axiosBackend.get<GetUsuariosResponse[]> (
-        `/${ENDPOINTS.USUARIO_LOGADO}`,
+        `/${ENDPOINTS.USUARIO_POR_MATRICULA}`,
+        {
+            params: {
+                enrollment: enrollment
+            }
+        }
     )
     return data;
 }

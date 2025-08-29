@@ -1,9 +1,7 @@
-import { Box, Center, Flex, For, IconButton, SimpleGrid, Text, Image, Spinner } from "@chakra-ui/react";
-import { Avatar } from "@/components/ui/avatar";
+import { Box, Center, Flex, For, IconButton, Text, Image, Spinner } from "@chakra-ui/react";
 import { CardBody, CardRoot } from "@chakra-ui/react/card";
-import { LuArrowBigLeft, LuChevronLeft } from "react-icons/lu";
+import { LuChevronLeft } from "react-icons/lu";
 import { Separator } from "@chakra-ui/react";
-import escudoUfcg from "@/assets/escudo-ufcg-big.png"
 
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useNavigate, useParams } from "react-router-dom";

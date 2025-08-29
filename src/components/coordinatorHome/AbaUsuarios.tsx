@@ -10,11 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { LuCog, LuTrash } from "react-icons/lu";
 import { createUser, deleteUser, getUsuariosByCurso } from "@/service/userService";
 import { CreateUserPayload } from "@/interfaces/ServicePayloads";
+import { getStudentFromDasByEnrollment } from "@/service/eurecaService";
+import { toaster } from "../ui/toaster";
 
 const AbaUsuarios = () => {
     const [usuarios, setUsuarios] = useState<GetUsuariosResponse[]>([]);
     const [nome, setNome] = useState("");
-    const [login, setLogin] = useState("");
+    const [enrollment, setEnrollment] = useState("");
     const [senha, setSenha] = useState("");
     const [placaSelecionada, setPlacaSelecionada] = useState("");
     const [resultsPlacasCriadas, setResultsPlacasCriadas] = useState<PlacaResponse[]>([]);
@@ -88,79 +90,40 @@ const AbaUsuarios = () => {
     }
 
     const handleCreateUser = async () => {
-        const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
-        const courseCode = String(eurecaProfile.attributes.code)
-        let payload: CreateUserPayload = {
-            name: nome,
-            login: login,
-            password: senha,
-            courseCode: courseCode,
-            plaqueId: selectValue
+        try {
+            console.log(sessionStorage.getItem(SESSION_STORAGE.EURECA_TOKEN))
+            const student = await getStudentFromDasByEnrollment(enrollment)
+            let payload: CreateUserPayload = {
+                name: student.nome,
+                enrollment: student.matricula_do_estudante,
+                courseCode: String(student.codigo_do_curso),
+                plaqueId: selectValue
+            }
+            console.log(payload)
+            const novoUsuario = await createUser(payload)
+            setUsuarios([...usuarios,novoUsuario])
+        } catch (error) {
+            console.log(error);
+            toaster.create({
+            title: "Falha na operação",
+            description: "Certifique-se de que essa é uma matrícula válida de um estudante do seu curso",
+            type: "error"
+            });
         }
-        console.log(payload)
-        const novoUsuario = await createUser(payload)
-        setUsuarios([...usuarios,novoUsuario])
     }
 
     return (
-        <Grid templateColumns="1fr 1fr" gap={4} mt={2}>
-            <GridItem>
-                <Box bg={EURECA_COLORS.CINZA} p={4} borderRadius="lg" h="100%">
-                <Text fontSize="lg" fontWeight="bold" mb={4}>
-                    Usuários que você cadastrou
-                </Text>
-
-                {isUsuariosLoading || isPlacasCriadasLoading ? (
-                    <Text>Carregando...</Text>
-                ) : (<>
-                    <Box as="table" width="100%">
-                        <Box as="thead" bg={EURECA_COLORS.AZUL_ESCURO}>
-                        <Box as="tr">
-                            <Box as="th" textAlign="left" p={2}>Nome</Box>
-                            <Box as="th" textAlign="left" p={2}>Login</Box>
-                            <Box as="th" textAlign="left" p={2}>Período da Placa</Box>
-                            <Box as="th" p={2}></Box>
-                        </Box>
-                        </Box>
-                        <Box as="tbody">
-                        {usuarios?.map((user, idx) => (
-                            <Box as="tr" key={idx} borderBottom="1px solid gray">
-                            <Box as="td" p={2}>{user.name}</Box>
-                            <Box as="td" p={2}>{user.login}</Box>
-                            <Box as="td" p={2}>{placasMapeadas.find(m => m.id === user.plaqueId)?.periodo || "-"}</Box>
-                            <Box as="td" p={2}>
-                                <IconButton onClick={()=>handleDeleteUser(user.id)} size={"xl"} variant={"ghost"} aria-label="Voltar" bgColor={EURECA_COLORS.AZUL_MEDIO}> 
-                                    <LuTrash />
-                                </IconButton>
-                            </Box>
-                            </Box>
-                        ))}
-                        </Box>
-                    </Box>
-                </>)}
-                
-                </Box>
-            </GridItem>
-
-            <GridItem>
-                <Box bg={EURECA_COLORS.CINZA} p={4} borderRadius="lg" h="100%">
+        <>
+            <Box bg={EURECA_COLORS.CINZA} p={4} borderRadius="lg" h="100%" mb={4}>
                 <Text fontSize="lg" fontWeight="bold" mb={4}>
                     Criar usuário
                 </Text>
-
+                <Text fontSize="sm" fontWeight="lighter">
+                    Escreva a matrícula de estudante que deseja atribuir à comissão de uma placa específica. Isso dará ao estudante a capacidade de logar com suas credenciais do SCAO para editar a placa atribuída.
+                </Text>
                 <Box mb={3}>
-                    <Text mb={1}>Nome:</Text>
-                    <Input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: Comissão 2023.2" bg={EURECA_COLORS.CINZA_CLARO} color={"black"}/>
-                </Box>
-
-                <Box mb={3}>
-                    <Text mb={1}>Login:</Text>
-                    <Input value={login} onChange={(e) => setLogin(e.target.value)} placeholder="Ex.: formaturacc20232" bg={EURECA_COLORS.CINZA_CLARO} color={"black"}/>
-                </Box>
-
-                <Box mb={3}>
-                    <Text mb={1}>Senha:</Text>
-                    <Input value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="Ex.: o2810n6KSj" bg={EURECA_COLORS.CINZA_CLARO} color={"black"}/>
+                    <Text mb={1}>Matrícula:</Text>
+                    <Input value={enrollment} onChange={(e) => setEnrollment(e.target.value)} placeholder="Ex.: 121113333" bg={EURECA_COLORS.CINZA_CLARO} color={"black"}/>
                 </Box>
 
                 <Box mb={3}>
@@ -183,8 +146,41 @@ const AbaUsuarios = () => {
                     Criar Usuário
                 </Button>
                 </Box>
-            </GridItem>
-        </Grid>
+                <Box bg={EURECA_COLORS.CINZA} p={4} borderRadius="lg" h="100%">
+                <Text fontSize="lg" fontWeight="bold" mb={4}>
+                    Usuários que você cadastrou
+                </Text>
+
+                {isUsuariosLoading || isPlacasCriadasLoading ? (
+                    <Text>Carregando...</Text>
+                ) : (<>
+                    <Box as="table" width="100%">
+                        <Box as="thead" bg={EURECA_COLORS.AZUL_ESCURO}>
+                        <Box as="tr">
+                            <Box as="th" textAlign="left" p={2}>Nome</Box>
+                            <Box as="th" textAlign="left" p={2}>Matrícula</Box>
+                            <Box as="th" textAlign="left" p={2}>Período da Placa</Box>
+                            <Box as="th" p={2}></Box>
+                        </Box>
+                        </Box>
+                        <Box as="tbody">
+                        {usuarios?.map((user, idx) => (
+                            <Box as="tr" key={idx} borderBottom="1px solid gray">
+                            <Box as="td" p={2}>{user.name}</Box>
+                            <Box as="td" p={2}>{placasMapeadas.find(m => m.id === user.plaqueId)?.periodo || "-"}</Box>
+                            <Box as="td" p={2}>
+                                <IconButton onClick={()=>handleDeleteUser(user.id)} size={"xl"} variant={"ghost"} aria-label="Voltar" bgColor={EURECA_COLORS.AZUL_MEDIO}> 
+                                    <LuTrash />
+                                </IconButton>
+                            </Box>
+                            </Box>
+                        ))}
+                        </Box>
+                    </Box>
+                </>)}
+            
+            </Box>
+        </>
     );
 };
 

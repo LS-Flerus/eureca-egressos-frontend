@@ -31,3 +31,9 @@ export type Curso = {
     area_de_retencao: number,
     ciclo_enade: number
 }
+
+export type StudentFromDAS = {
+    matricula_do_estudante: string,
+    nome: string,
+    codigo_do_curso: number,
+}

@@ -1,6 +1,8 @@
 import { GetTokenPayload } from "@/interfaces/ServicePayloads";
-import { axiosAS } from "./axios";
+import { axiosAS, axiosDAS } from "./axios";
 import { GetEurecaProfileResponse, GetTokenResponse } from "@/interfaces/ServiceResponses";
+import { StudentFromDAS } from "@/interfaces/Models";
+import { SESSION_STORAGE } from "@/util/constants";
 
 export const getToken = async (credenciais: GetTokenPayload) => {
     const {username, password} = credenciais;
@@ -30,3 +32,18 @@ export const getProfile = async (token: string) => {
   );
   return data;
 };
+
+export const getStudentFromDasByEnrollment = async (enrollment: string) => {
+  const { data } = await axiosDAS.get<StudentFromDAS>(
+    'estudantes/estudante',
+    { params: 
+      {
+        estudante: enrollment
+      },
+      headers: {
+        'token-de-autenticacao': sessionStorage.getItem(SESSION_STORAGE.EURECA_TOKEN)
+      }
+    }
+  )
+  return data;
+}
