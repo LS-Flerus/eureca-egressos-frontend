@@ -16,17 +16,14 @@ import { getSessoesByPlacaId } from "@/service/sessoesPlacaService";
 import { getFotosByPlacaId } from "@/service/fotosService";
 import { getImageFromMongoDB } from "@/service/imageService";
 import SessoesVisualizadorPlaca from "@/components/visualizadorPlaca/SessoesVisualizadorPlaca";
+import FotosVisualizadorPlaca from "@/components/visualizadorPlaca/FotosVisualizadorPlaca";
+import EstudantesVisualizadorPlaca from "@/components/visualizadorPlaca/EstudantesVisualizadorPlacas";
 
 const VisualizadorPlaca = () => {
-        const [nomeSessao, setNomeSessao] = useState("");
-    
-        const [sessoesPlacas, setSessoesPlacas] = useState<SessoesPlacaResponse[]>([])
-        const [conteudoSessao, setConteudoSessao] = useState<string>("")
     
         const [fotoPrincipal, setFotoPrincipal] = useState<GetPhotoResponse>()
         const [imgPrincipal,setImgPrincipal] = useState("")
         const [fotosSecundarias, setFotosSecundarias] = useState<GetPhotoResponse[]>()
-        const [imgSecundarias, setImgSecundarias] = useState("")
         
     const navigate = useNavigate();
     let { id } = useParams();
@@ -49,14 +46,6 @@ const VisualizadorPlaca = () => {
             return estudantes.sort((a: EstudanteResponse, b: EstudanteResponse) =>
                 a.name.localeCompare(b.name)
             );
-        }
-    })
-
-    const {data: dataSessoes, isLoading: isSessoesLoading } = useQuery({
-        queryKey: ["dataSessoesByPlacaId", {id: id}],
-        queryFn: ({ queryKey }) => {
-            const [_key, { id }] = queryKey as [string, {id:string}];
-            return getSessoesByPlacaId(id)
         }
     })
 
@@ -117,7 +106,7 @@ const VisualizadorPlaca = () => {
 
       <Center>
         <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="70vh" shadow="xl">
-            {isPlacaLoading && isEstudantesLoading && isSessoesLoading? (
+            {isPlacaLoading && isEstudantesLoading && isDataAllPhotosLoading ? (
                 <Text>Carregando...</Text>
             ) : (
                 <CardBody>
@@ -135,31 +124,23 @@ const VisualizadorPlaca = () => {
                             </Box>
                         </Center>
                     </Box>
-                    <SimpleGrid columns={5} mt={-3}>
-                    <For each={dataEstudantes}>
-                        {(estudante) => (
-                        <Center flexDir="column">
-                            <Image
-                            src={escudoUfcg}
-                            alt={estudante.name}
-                            boxSize="200px"
-                            borderRadius="full"
-                            objectFit="cover"
-                            border={`2px solid ${EURECA_COLORS.AZUL_ESCURO}`}
-                            mt={6}
-                            />
-                            <Text mt={2} textAlign="center">
-                            {estudante.name}
-                            </Text>
-                        </Center>
-                        )}
-                    </For>
-                    </SimpleGrid>
-
+                    <EstudantesVisualizadorPlaca dataEstudantes={dataEstudantes} />
+                    <Separator my={6} mx={4}/>
                     <Center>
-                        <Box pt={10}>{isPlacaLoading ? <Spinner /> : <SessoesVisualizadorPlaca placa={dataPlaca}/>}</Box>
+                        <Box>{isPlacaLoading ? <Spinner /> : <SessoesVisualizadorPlaca placa={dataPlaca}/>}</Box>
                     </Center>
-                    
+                    <Separator my={4} />
+                    <Center>
+                        <Box pt={10}>
+                            <For each={fotosSecundarias}>
+                                {(foto) => (
+                                <Center m={3} flexDir="column">
+                                    <FotosVisualizadorPlaca idImage={foto.photoId}/>
+                                </Center>
+                                )}
+                            </For>
+                        </Box>
+                    </Center>
                 </CardBody>
             )}
         </CardRoot>

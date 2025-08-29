@@ -34,7 +34,8 @@ const SessoesVisualizadorPlaca = ({placa}: SessoesVisualizadorPlacaProps) => {
     }
 
   return (
-    <VStack gap={6} align="stretch" w="100%">
+    <Box display="flex" flexWrap="wrap" gap={6} justifyContent="flex-start"
+        >
         <Box
             bg={EURECA_COLORS.CINZA_CLARO}
             p={6}
@@ -101,7 +102,7 @@ const SessoesVisualizadorPlaca = ({placa}: SessoesVisualizadorPlacaProps) => {
                 )
             }</>
         }
-    </VStack>
+    </Box>
   )
 };
 
