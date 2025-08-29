@@ -73,7 +73,6 @@ export const LoginPopUp = () => {
             description: "Verifique suas credenciais ou tente novamente mais tarde",
             type: "error"
           });
-          alert(2)
         },
     });
 

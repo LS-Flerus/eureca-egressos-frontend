@@ -103,7 +103,7 @@ const VisualizadorPlaca = () => {
       </Flex>
 
       <Center>
-        <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="70vh" shadow="xl">
+        <CardRoot bg={EURECA_COLORS.CINZA} w="90%" minH="70vh" shadow="xl">
             {isPlacaLoading && isEstudantesLoading && isDataAllPhotosLoading ? (
                 <Text>Carregando...</Text>
             ) : (
@@ -122,14 +122,16 @@ const VisualizadorPlaca = () => {
                             </Box>
                         </Center>
                     </Box>
+
                     <EstudantesVisualizadorPlaca dataEstudantes={dataEstudantes} />
                     <Separator my={6} mx={4}/>
+                    
                     <Center>
                         <Box>{isPlacaLoading ? <Spinner /> : <SessoesVisualizadorPlaca placa={dataPlaca}/>}</Box>
                     </Center>
                     <Separator my={4} />
                     <Center>
-                        <Box pt={10}>
+                        <Box display="flex" flexWrap="wrap" justifyContent="flex-start" >
                             <For each={fotosSecundarias}>
                                 {(foto) => (
                                 <Center m={3} flexDir="column">

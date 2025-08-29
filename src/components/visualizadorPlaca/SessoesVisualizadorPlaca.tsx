@@ -34,8 +34,7 @@ const SessoesVisualizadorPlaca = ({placa}: SessoesVisualizadorPlacaProps) => {
     }
 
   return (
-    <Box display="flex" flexWrap="wrap" gap={6} justifyContent="flex-start"
-        >
+    <Box display="flex" flexWrap="wrap" gap={6} justifyContent="flex-start">
         <Box
             bg={EURECA_COLORS.CINZA_CLARO}
             p={6}
