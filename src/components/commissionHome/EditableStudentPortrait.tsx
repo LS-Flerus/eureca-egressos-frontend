@@ -5,18 +5,20 @@ import { useQuery } from "@tanstack/react-query";
 import { getImageFromMongoDB } from "@/service/imageService";
 import { EstudanteResponse } from "@/interfaces/ServiceResponses";
 import { LuPersonStanding, LuUserRound } from "react-icons/lu";
+import { DialogStudentPhoto } from "./DialogStudentPhoto";
 
-type EstudanteFotoVisualizadorPlacaProps = {
+type EditableStudentPortraitProps = {
     estudante: EstudanteResponse
 }
 
-const EstudanteFotoVisualizadorPlaca = ({estudante}: EstudanteFotoVisualizadorPlacaProps) => {
+const EditableStudentPortrait = ({estudante}: EditableStudentPortraitProps) => {
         const [img,setImg] = useState("")
 
 // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------    
         const getImage = async () => {
-            console.log(estudante)
             const image = await getImageFromMongoDB(estudante.photoId);
+            console.log("cadê minha foto?")
+            console.log(image)
             setImg(image);
             return image;
         }
@@ -27,7 +29,7 @@ const EstudanteFotoVisualizadorPlaca = ({estudante}: EstudanteFotoVisualizadorPl
 // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     
     return (
-        <>
+        <DialogStudentPhoto student={estudante}>
             { !estudante.photoId ?  
                 <Box boxSize="160px"
                     bgColor={EURECA_COLORS.CINZA_CLARO}
@@ -60,9 +62,10 @@ const EstudanteFotoVisualizadorPlaca = ({estudante}: EstudanteFotoVisualizadorPl
                     <Center>
                         <Spinner size={"xl"} color={EURECA_COLORS.AZUL_ESCURO}/>
                     </Center>
-                </Box>) }
-            </>
+                </Box>) 
+            }
+        </DialogStudentPhoto>
     )
 };
 
-export default EstudanteFotoVisualizadorPlaca;
+export default EditableStudentPortrait;

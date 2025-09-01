@@ -76,7 +76,7 @@ export const LoginPopUp = () => {
         },
     });
 
-return (
+  return (
     <>
         <Dialog.Root
             placement={"center"}
@@ -116,5 +116,5 @@ return (
         </Dialog.Root>
         <Toaster/>
     </>
-);
+  );
 };

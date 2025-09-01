@@ -64,3 +64,12 @@ export type UpdatePhotoPayload = {
   photoId: string,
   mainPhoto: boolean
 }
+
+export type UpdateStudentPayload = {
+  id: string,
+  name: string,
+  courseCode: string,
+  semester: string,
+  plaqueId: string,
+  photoId: string
+}

@@ -1,8 +1,6 @@
 import { Box, Center, Flex, For, IconButton, SimpleGrid, Text, Image } from "@chakra-ui/react";
 import { CardBody, CardRoot } from "@chakra-ui/react/card";
-import { LuChevronLeft } from "react-icons/lu";
 import { Separator } from "@chakra-ui/react";
-import escudoUfcg from "@/assets/escudo-ufcg-big.png"
 
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,7 +9,7 @@ import { getPlacasById } from "@/service/placasService";
 import { useEffect, useState } from "react";
 import { EstudanteResponse, GetUsuariosResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
 import { getEstudatesByPlacaId } from "@/service/estudantesService";
-import { getSessoesByPlacaId } from "@/service/sessoesPlacaService";
+import EditableStudentPortrait from "./EditableStudentPortrait";
 
 const PlacaEdicao = () => {
 
@@ -51,10 +49,10 @@ const PlacaEdicao = () => {
     }
 
   return (
-    <Box h="100vh" overflowY="auto" p={8}>
+    <Box h="100vh" p={8}>
 
       <Center>
-        <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="50vh">
+        <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="50vh" mb={6}>
             {isPlacaLoading && isEstudantesLoading ? (
                 <Text>Carregando...</Text>
             ) : (
@@ -68,24 +66,16 @@ const PlacaEdicao = () => {
                     <Separator my={4} />
 
                     <SimpleGrid columns={5} mt={-3}>
-                    <For each={dataEstudantes}>
-                        {(estudante) => (
-                        <Center flexDir="column">
-                            <Image
-                            src={escudoUfcg}
-                            alt={estudante.name}
-                            boxSize="200px"
-                            borderRadius="full"
-                            objectFit="cover"
-                            border={`2px solid ${EURECA_COLORS.AZUL_ESCURO}`}
-                            mt={6}
-                            />
-                            <Text mt={2} textAlign="center">
-                            {estudante.name}
-                            </Text>
-                        </Center>
-                        )}
-                    </For>
+                        <For each={dataEstudantes}>
+                            {(estudante) => (
+                            <Center flexDir="column">
+                                <EditableStudentPortrait estudante={estudante}/>
+                                <Text mt={2} textAlign="center">
+                                {estudante.name}
+                                </Text>
+                            </Center>
+                            )}
+                        </For>
                     </SimpleGrid>
                 </CardBody>
             )}

@@ -74,7 +74,7 @@ const FotosEdicao = () => {
     }
     
     const handleUploadImagemPrincipal = async (e: any) => {
-        console.log(e.acceptedFiles[0])
+        console.log(e)
         const file = e.acceptedFiles[0]
         
         const conversionResult: string | ArrayBuffer | null | undefined = await imagebase64(file)
@@ -222,6 +222,7 @@ const FotosEdicao = () => {
                                         label="Faça o upload da foto da turma inteira"
                                         description=".png ou .jpg de até 5MB"
                                         bgColor={"black/50"}
+                                        style={{ cursor: "pointer" }}
                                     />
                                     <FileUploadList/>
                                 </FileUploadRoot>

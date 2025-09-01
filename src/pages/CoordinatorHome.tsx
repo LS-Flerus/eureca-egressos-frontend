@@ -20,7 +20,7 @@ const CoordinatorHome = () => {
         <Box h={"100vh"} overflowY={"auto"}>
             <Box pl="15vh" pt="5vh" pr="15vh">
                 <Flex justify="space-between" align="center">
-                    <Tabs.Root defaultValue="usuarios" variant="plain" w="100%">
+                    <Tabs.Root defaultValue="placas" variant="plain" w="100%">
                         <Flex justify="space-between" align="center" mb={0}>
                             <Tabs.List
                                 display="flex"
