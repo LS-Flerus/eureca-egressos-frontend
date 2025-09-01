@@ -66,7 +66,7 @@ const Home = () => {
                     <Box display={"flex"} pt={"4vh"} spaceX={"24"}>
                         <CardRoot className="margin-top" bg={EURECA_COLORS.CINZA}>
                             <CardBody>
-                                <Text fontSize={"md"}>Bem-vindo ao Eureca Egressos! Aqui você pode conferir a versão digital das placas de concluintes dos e-gressos da UFCG.</Text>
+                                <Text fontSize={"md"}>Bem-vindo ao Eureca Egressos! Aqui você pode conferir a versão digital das placas de concluintes dos egressos da UFCG.</Text>
                             </CardBody>
                         </CardRoot>
                         <Spacer />

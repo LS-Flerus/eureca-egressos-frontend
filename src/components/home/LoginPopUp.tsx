@@ -90,13 +90,13 @@ export const LoginPopUp = () => {
                   <Dialog.Content boxShadow={"sm"} bgColor={`${EURECA_COLORS.BRANCO}`} className="text" color={EURECA_COLORS.CINZA} textAlign={"justify"}>
                       <Dialog.Header display={"flex"} flexDir={"column"}>
                           <Dialog.Title color={"black"}>Login</Dialog.Title>
-                          <Dialog.Description>Entre com suas credenciais do SCAO caso seja um coordenador, ou com as credenciais fornecidas pelo coordenador do curso caso faça parte de uma comissão de formatura.</Dialog.Description>
+                          <Dialog.Description>Entre com suas credenciais do SCAO caso seja um coordenador ou integrante de uma comissão de formatura.</Dialog.Description>
                       </Dialog.Header>
                       <Dialog.Body>
                         <form>
                           <Stack gap="2" w="full">
                               <Field.Root>
-                                  <Input autoComplete="" value={loginvalue} onChange={(e) => setLoginValue(e.target.value)} placeholder="Username" _placeholder={{ color: "gray.500", opacity: 1 }} color="black" bg={EURECA_COLORS.CINZA_CLARO}/>
+                                  <Input autoComplete="" value={loginvalue} onChange={(e) => setLoginValue(e.target.value)} placeholder="Usuário" _placeholder={{ color: "gray.500", opacity: 1 }} color="black" bg={EURECA_COLORS.CINZA_CLARO}/>
                               </Field.Root>
                               <Field.Root>
                                   <PasswordInput autoComplete="current-password" _placeholder={{ color: "gray.500", opacity: 1 }} color="black" value={passwordvalue} onChange={(e) => setPasswordValue(e.target.value)} placeholder="Senha" bg={EURECA_COLORS.CINZA_CLARO}/>
