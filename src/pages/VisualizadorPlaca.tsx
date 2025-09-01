@@ -55,7 +55,11 @@ const VisualizadorPlaca = () => {
     }, [dataPlaca]);
 
     function goBack(){
-        navigate(`/egressos/`)
+        if(!!sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE) && JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE)).attributes.type == "Curso") {
+            navigate("/egressos/coordenador")
+        } else {
+            navigate(`/egressos/`)
+        }
     }
 
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------

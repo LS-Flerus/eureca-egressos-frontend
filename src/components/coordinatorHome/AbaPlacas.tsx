@@ -1,12 +1,14 @@
-import { Box, Button, For, Grid, GridItem, Input, SimpleGrid, Text} from "@chakra-ui/react";
+import { Box, Button, For, Grid, GridItem, IconButton, Input, SimpleGrid, Text} from "@chakra-ui/react";
 import { CardBody, CardRoot } from "@chakra-ui/react/card";
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useEffect, useState } from "react";
 import { GetEurecaProfileResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createPlacasEspecificas, getPlacasByCurso, getPlacasByFilter } from "@/service/placasService";
+import { createPlacasEspecificas, deletePlaque, getPlacasByCurso, getPlacasByFilter } from "@/service/placasService";
 import { CardPlacaCoordinator } from "@/components/coordinatorHome/CardPlacaCoordinatorHome";
 import { useNavigate } from "react-router-dom";
+import { LuTrash } from "react-icons/lu";
+import { CardPlaca } from "../home/CardPlaca";
 
 const AbaPlacas = () => {
 
@@ -61,37 +63,49 @@ const AbaPlacas = () => {
         createSpecificPlaques.mutate({periodos: listaPeriodosParaCriarPlacas, codigoDeCurso: courseCode})
     };
 
-    const handleLogOut = () => {
-        sessionStorage.removeItem(SESSION_STORAGE.EURECA_PROFILE);
-        sessionStorage.removeItem(SESSION_STORAGE.EURECA_TOKEN);
-        navigate("/egressos/")
+    const handleDeletePlaque = async (placaId: string) => {
+        await deletePlaque(placaId);
+        const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
+        const courseCode = String(eurecaProfile.attributes.code)
+        const todosUsuarios = await getPlacasByCurso(courseCode)
+        setResultsPlacasCriadas(todosUsuarios)
     }
 
     return (
         <Box mt={6} h="50vh">
             <Grid templateColumns={"1fr 1fr"} gap={4} mt={6}>
                 <GridItem>
-                    <CardRoot bg={EURECA_COLORS.CINZA} h="40vh">
-                        <CardBody overflowY="auto">
-                            <Text fontSize="lg" fontWeight="bold" mb={4}>
-                                Placas a serem aprovadas:
-                            </Text>
-                            {isPlacasCriadasLoading ? (
-                                <Text>Carregando...</Text>
-                            ) : resultsPlacasCriadas && resultsPlacasCriadas.length > 0 ? (
-                                <SimpleGrid columns={2} px={2} gapX={2} justifyItems="stretch">
-                                    <For each={placasSeremAprovadas}>
-                                        {(item) => <CardPlacaCoordinator placa={item} />}
-                                    </For>
-                                </SimpleGrid>
-                            ) : (
-                                <Text>Nenhuma placa encontrada.</Text>
-                            )}
-                        </CardBody>
-                    </CardRoot>
+                <Box bg={EURECA_COLORS.CINZA} p={4} borderRadius="lg" h="100%" maxH={"30vh"} overflow={"auto"}>
+                        <Text fontSize="lg" fontWeight="bold" mb={4}>
+                            Gerenciar placas:
+                        </Text>
+                    <Box as="table" width="100%">
+                        <Box as="thead" bg={EURECA_COLORS.AZUL_ESCURO}>
+                        <Box as="tr">
+                            <Box as="th" textAlign="left" p={2}>Nome</Box>
+                            <Box as="th" textAlign="left" p={2}>Período da Placa</Box>
+                            <Box as="th" p={2}></Box>
+                        </Box>
+                        </Box>
+                        <Box as="tbody" overflow={"auto"}>
+                        {resultsPlacasCriadas?.map((placa, idx) => (
+                            <Box as="tr" key={idx} borderBottom="1px solid gray">
+                            <Box as="td" p={2}>{placa.className}</Box>
+                            <Box as="td" p={2}>{placa.semester}</Box>
+                            <Box as="td" p={2}>
+                                <IconButton onClick={()=>handleDeletePlaque(placa.id)} size={"xl"} variant={"ghost"} aria-label="Voltar" bgColor={EURECA_COLORS.AZUL_MEDIO}> 
+                                    <LuTrash />
+                                </IconButton>
+                            </Box>
+                            </Box>
+                        ))}
+                        </Box>
+                    </Box>
+                </Box>
                 </GridItem>
+                
                 <GridItem>
-                    <CardRoot bg={EURECA_COLORS.CINZA} h="40vh">
+                    <CardRoot bg={EURECA_COLORS.CINZA} h="30vh">
                         <CardBody overflowY="auto">
                             <Text fontSize="lg" fontWeight="bold" mb={4}>
                                 Gerar Placas:
@@ -101,54 +115,29 @@ const AbaPlacas = () => {
                             </Text>
                             <Input placeholder="Ex.: 2021.1,2021.2" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setListaPeriodosParaCriarPlacas(e.target.value)}></Input>
                             <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO} marginTop={"2"} onClick={handleCreatePlacasEspecificas}>Gerar placas</Button>
-                            <Text fontSize="sm" fontWeight="lighter" marginTop={"5"}>
-                                Gerar placas para todos períodos de seu curso que ainda não possuem uma na plataforma.
-                            </Text>
-                            <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO}>Gerar todas as placas restantes</Button>
-                        </CardBody>
-                    </CardRoot>
-                </GridItem>
-                <GridItem>
-                    <CardRoot bg={EURECA_COLORS.CINZA} h="40vh">
-                        <CardBody overflowY="auto">
-                            <Text fontSize="lg" fontWeight="bold" mb={4}>
-                                Placas aprovadas:
-                            </Text>
-                            {isPlacasCriadasLoading ? (
-                                <Text>Carregando...</Text>
-                            ) : resultsPlacasCriadas && resultsPlacasCriadas.length > 0 ? (
-                                <SimpleGrid columns={2} px={2} gapX={2} justifyItems="stretch">
-                                    <For each={placasAprovadas}>
-                                        {(item) => <CardPlacaCoordinator placa={item} />}
-                                    </For>
-                                </SimpleGrid>
-                            ) : (
-                                <Text>Nenhuma placa encontrada.</Text>
-                            )}
-                        </CardBody>
-                    </CardRoot>
-                </GridItem>
-                <GridItem>
-                    <CardRoot bg={EURECA_COLORS.CINZA} h="40vh">
-                        <CardBody overflowY="auto">
-                            <Text fontSize="lg" fontWeight="bold" mb={4}>
-                                Placas criadas:
-                            </Text>
-                            {isPlacasCriadasLoading ? (
-                                <Text>Carregando...</Text>
-                            ) : resultsPlacasCriadas && resultsPlacasCriadas.length > 0 ? (
-                                <SimpleGrid columns={2} px={2} gapX={2} justifyItems="stretch">
-                                    <For each={resultsPlacasCriadas}>
-                                        {(item) => <CardPlacaCoordinator placa={item} />}
-                                    </For>
-                                </SimpleGrid>
-                            ) : (
-                                <Text>Nenhuma placa encontrada.</Text>
-                            )}
                         </CardBody>
                     </CardRoot>
                 </GridItem>
             </Grid>
+            <CardRoot bg={EURECA_COLORS.CINZA} h="50vh" mt={3}>
+                <CardBody overflowY="auto">
+                    <Text fontSize="lg" fontWeight="bold" mb={4}>
+                        Placas criadas:
+                    </Text>
+                    {isPlacasCriadasLoading ? (
+                        <Text>Carregando...</Text>
+                    ) : resultsPlacasCriadas && resultsPlacasCriadas.length > 0 ? (
+                        <SimpleGrid columns={4} px={2} gapX={2} justifyItems="stretch">
+                            <For each={resultsPlacasCriadas}>
+                                {(item) => <CardPlaca placa={item} />}
+                            </For>
+                        </SimpleGrid>
+                    ) : (
+                        <Text>Nenhuma placa encontrada.</Text>
+                    )}
+                </CardBody>
+            </CardRoot>
+            
         </Box>
     );
 };

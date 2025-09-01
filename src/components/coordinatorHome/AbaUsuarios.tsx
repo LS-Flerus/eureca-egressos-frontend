@@ -167,6 +167,7 @@ const AbaUsuarios = () => {
                         {usuarios?.map((user, idx) => (
                             <Box as="tr" key={idx} borderBottom="1px solid gray">
                             <Box as="td" p={2}>{user.name}</Box>
+                            <Box as="td" p={2}>{user.enrollment}</Box>
                             <Box as="td" p={2}>{placasMapeadas.find(m => m.id === user.plaqueId)?.periodo || "-"}</Box>
                             <Box as="td" p={2}>
                                 <IconButton onClick={()=>handleDeleteUser(user.id)} size={"xl"} variant={"ghost"} aria-label="Voltar" bgColor={EURECA_COLORS.AZUL_MEDIO}> 

@@ -54,17 +54,19 @@ export const createPlacasEspecificas = async(parameters: {periodos: string, codi
     const listaPeriodos = parameters.periodos.split(',');
     const requisicaoCursos = await axiosDAS.get<Curso[]> (
             `/${ENDPOINTS.CURSOS}`,
-            {params:{
-                curso: parameters.codigoDeCurso
-            }}
-        )
+            {
+                params:{
+                    curso: parameters.codigoDeCurso
+                }
+            }
+    )
     const curso = requisicaoCursos.data[0];
 
     for(let periodoAtual of listaPeriodos) {
         let payload: CreatePlaquePayload = {
             courseCode:  parameters.codigoDeCurso,
             semester: periodoAtual,
-            className: "[SEM NOME]",
+            className: curso.descricao + " [" + parameters.codigoDeCurso + "] - " + periodoAtual,
             campus: curso.campus,
             approved: true,
             toApprove: false
@@ -90,6 +92,19 @@ export const updatePlaque = async(updatedPayload: UpdatePlaquePayload)=> {
         {
             params: {
                 id: updatedPayload.id
+            }
+        }
+    )
+
+    return data;
+}
+
+export const deletePlaque = async(id: string) => {
+    const { data } = await axiosBackend.delete<string> (
+        `/${ENDPOINTS.PLACA_DELETAR}`,
+        {
+            params: {
+                id: id
             }
         }
     )

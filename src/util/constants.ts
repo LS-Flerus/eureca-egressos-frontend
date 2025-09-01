@@ -10,6 +10,7 @@ export const ENDPOINTS = {
     PLACAS_CRIAR_FALTANTES: "",
     PLACAS_POR_CURSO: "plaque/getByCourseCode",
     PLACA_UPDATE: "plaque/update",
+    PLACA_DELETAR: 'plaque/delete',
 
     ESTUDANTES_PLACA: "students/getAllByPlaqueId",
     ATUALIZAR_ESTUDANTE: "students/update",
