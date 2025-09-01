@@ -38,7 +38,6 @@ const FiltroCampus = () => {
                 >
                     <Text fontSize="xl">Campus</Text>
                 </Collapsible.Trigger>
-                {openCampus && (
                     <Collapsible.Content h={DIMENSOES.ALTURA_FILTROS} overflowY={"auto"}>
                     <Box padding="4">
                         {isCampusLoading ? (
@@ -66,7 +65,6 @@ const FiltroCampus = () => {
                             )}
                     </Box>
                     </Collapsible.Content>
-                )}
                 </Collapsible.Root>
             </CardBody>
         </CardRoot>

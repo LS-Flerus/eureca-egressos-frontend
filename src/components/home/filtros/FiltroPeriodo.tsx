@@ -11,12 +11,12 @@ const FiltroPeriodo = () => {
 
     useEffect(() => {
         console.log("Periodo inicial da pesquisa", periodoInicio);
-        sessionStorage.setItem(SESSION_STORAGE.PERIODO_INICIO, JSON.stringify(periodoInicio)) 
+        sessionStorage.setItem(SESSION_STORAGE.PERIODO_INICIO, periodoInicio) 
     }, [periodoInicio]);
 
     useEffect(() => {
         console.log("Periodo final da pesquisa", periodoFim);
-        sessionStorage.setItem(SESSION_STORAGE.PERIODO_FIM, JSON.stringify(periodoFim)) 
+        sessionStorage.setItem(SESSION_STORAGE.PERIODO_FIM, periodoFim) 
     }, [periodoFim]);
       
   return (
@@ -32,7 +32,6 @@ const FiltroPeriodo = () => {
             >
             <Text fontSize="xl">Período de conclusão</Text>
           </Collapsible.Trigger>
-          {open && (
             <Collapsible.Content h={DIMENSOES.ALTURA_FILTROS} alignItems={"center"}>
               <Box padding="4" 
                 display="flex" 
@@ -49,7 +48,6 @@ const FiltroPeriodo = () => {
                 <Input placeholder="Ex.: 2023.2" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setPeriodoFim(e.target.value)}></Input>
               </Box>
             </Collapsible.Content>
-          )}
         </Collapsible.Root>
       </CardBody>
     </CardRoot>

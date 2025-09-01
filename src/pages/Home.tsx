@@ -31,6 +31,7 @@ const Home = () => {
             toApprove: null,
             studentName: sessionStorage.getItem(SESSION_STORAGE.NOME_ALUNO) || null,
         };
+        console.log(payload)
         setResults([])
         setShowResultsCard(true);
         getPlaquesByFilter.mutate(payload)
