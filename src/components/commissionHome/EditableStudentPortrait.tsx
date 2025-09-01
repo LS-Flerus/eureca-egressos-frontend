@@ -37,7 +37,8 @@ const EditableStudentPortrait = ({estudante}: EditableStudentPortraitProps) => {
                     objectFit="cover"
                     border={`2px solid ${EURECA_COLORS.AZUL_ESCURO}`}
                     mt={6}
-                    overflow={"hidden"}>
+                    overflow={"hidden"}
+                    cursor={"pointer"}>
                     <Center>
                         <SimpleGrid columns={1}mt={2}>
                             <LuUserRound size={"xl"} color={EURECA_COLORS.AZUL_ESCURO}/>
@@ -52,13 +53,15 @@ const EditableStudentPortrait = ({estudante}: EditableStudentPortraitProps) => {
                     objectFit="cover"
                     border={`2px solid ${EURECA_COLORS.AZUL_ESCURO}`}
                     mt={6}
+                    cursor={"pointer"}
                 />) : (
                 <Box boxSize="160px"
                     bgColor={EURECA_COLORS.CINZA_CLARO}
                     borderRadius="full"
                     objectFit="cover"
                     border={`2px solid ${EURECA_COLORS.AZUL_ESCURO}`}
-                    mt={6}>
+                    mt={6}
+                    cursor={"progress"}>
                     <Center>
                         <Spinner size={"xl"} color={EURECA_COLORS.AZUL_ESCURO}/>
                     </Center>

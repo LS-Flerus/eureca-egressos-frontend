@@ -199,6 +199,7 @@ const FotosEdicao = () => {
                                         label="Faça o upload da foto da turma inteira"
                                         description=".png ou .jpg de até 5MB"
                                         bgColor={"black/50"}
+                                        cursor={"pointer"}
                                     />
                                     <FileUploadList/>
                                 </FileUploadRoot>
@@ -223,6 +224,7 @@ const FotosEdicao = () => {
                                         description=".png ou .jpg de até 5MB"
                                         bgColor={"black/50"}
                                         style={{ cursor: "pointer" }}
+                                        cursor={"pointer"}
                                     />
                                     <FileUploadList/>
                                 </FileUploadRoot>

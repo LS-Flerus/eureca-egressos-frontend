@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { EstudanteResponse, GetUsuariosResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
 import { getEstudatesByPlacaId } from "@/service/estudantesService";
 import EditableStudentPortrait from "./EditableStudentPortrait";
+import { LuPencil } from "react-icons/lu";
+import { DialogPlaqueName } from "./DialogPlaqueName";
 
 const PlacaEdicao = () => {
 
@@ -58,9 +60,12 @@ const PlacaEdicao = () => {
             ) : (
                 <CardBody>
                     <Center>
-                    <Text fontSize="2xl" fontWeight="bold">
-                        {placaInfo ? placaInfo.className : "Carregando..."}
-                    </Text>
+                        <Box display="flex" flexWrap="wrap">
+                            <Text fontSize="2xl" fontWeight="bold">
+                                {placaInfo ? placaInfo.className : "Carregando..."}
+                            </Text>
+                            <DialogPlaqueName placa={placaInfo} />
+                        </Box>
                     </Center>
 
                     <Separator my={4} />

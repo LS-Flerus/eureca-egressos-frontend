@@ -93,6 +93,7 @@ export const DialogStudentPhoto = ({ student, children }: DialogStudentPhotoProp
                                         label="Faça o upload da foto da turma inteira"
                                         description=".png ou .jpg de até 5MB"
                                         bgColor={"black/50"}
+                                        cursor={"pointer"}
                                     />
                                     <FileUploadList/>
                                 </FileUploadRoot>
