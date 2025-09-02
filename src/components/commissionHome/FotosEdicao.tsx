@@ -169,16 +169,30 @@ const FotosEdicao = () => {
     }
 
     const handleSubmitImagemExtra = async () => {
-        const egressosProfile: GetUsuariosResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EGRESSOS_PROFILE));
-        const novaImagem = await uploadImageMongoDB(listaUploadImgSecundarias);
-        const payload: CreatePhotoPayload = {
-            plaqueId: egressosProfile.plaqueId,
-            photoId: novaImagem._id,
-            mainPhoto: false
+        try {
+            const egressosProfile: GetUsuariosResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EGRESSOS_PROFILE));
+            const novaImagem = await uploadImageMongoDB(listaUploadImgSecundarias);
+            const payload: CreatePhotoPayload = {
+                plaqueId: egressosProfile.plaqueId,
+                photoId: novaImagem._id,
+                mainPhoto: false
+            }
+            let novaFoto = await createFoto(payload);
+            console.log(novaFoto)
+            setFotosSecundarias([...fotosSecundarias,novaFoto])
+            toaster.create({
+                title: "Operação bem sucedida!",
+                description: "Recarregue a página para atualizar a interface",
+                type: "success"
+            });
+        } catch (error) {
+            console.log(error)
+            toaster.create({
+                title: "Falha na operação",
+                description: "Tente novamente mais tarde",
+                type: "error"
+            });
         }
-        let novaFoto = await createFoto(payload);
-        console.log(novaFoto)
-        setFotosSecundarias([...fotosSecundarias,novaFoto])
     }
 // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     
