@@ -23,6 +23,7 @@ export const LoginPopUp = () => {
             checkEurecaProfileMutation.mutate(data);
         },
         onError: (error) => {
+          toaster.dismiss();
           console.log(error)
           toaster.create({
             title: "Falha na autenticação",
@@ -42,6 +43,7 @@ export const LoginPopUp = () => {
           } else if (data.attributes.type == "Aluno"){
             checkEgressosUserMutation.mutate(data.id);
           } else {
+            toaster.dismiss();
             toaster.create({
               title: "Não autorizado!",
               description: "Se você for de uma comissão de formatura, utilize as credenciais dadas pela sua coordenação",
@@ -50,6 +52,7 @@ export const LoginPopUp = () => {
           }
         },
         onError: (error) => {
+          toaster.dismiss();
           console.log(error);
           toaster.create({
             title: "Falha na autenticação",
@@ -67,6 +70,7 @@ export const LoginPopUp = () => {
           navigate("/egressos/comissao")
         },
         onError: (error) => {
+          toaster.dismiss();
           console.log(error);
           toaster.create({
             title: "Falha na autenticação",
@@ -75,6 +79,14 @@ export const LoginPopUp = () => {
           });
         },
     });
+
+    const handleLogin = async () => {
+      toaster.create({
+        title: "Carregando perfil...",
+        type: "info",
+      });
+      //checkEurecaTokenMutation.mutate({username: loginvalue, password: passwordvalue})
+    }
 
   return (
     <>
@@ -105,7 +117,7 @@ export const LoginPopUp = () => {
                         </form>
                       </Dialog.Body>
                       <Dialog.Footer mb={4} placeContent={"center"}>
-                          <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO} onClick={()=>checkEurecaTokenMutation.mutate({username: loginvalue, password: passwordvalue})} px={6}>Entrar</Button>
+                          <Button bg={EURECA_COLORS.AZUL_ESCURO} size={"xl"} color={EURECA_COLORS.BRANCO} onClick={handleLogin} px={6}>Entrar</Button>
                       </Dialog.Footer>
                       <Dialog.CloseTrigger asChild>
                       <CloseButton m={2} size="sm" />

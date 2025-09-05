@@ -41,10 +41,10 @@ const FiltroPeriodo = () => {
                 h="100%"
                 >
                 
-                <Text>Período de início</Text>
+                <Text>Período de início da busca</Text>
                 <Input placeholder="Ex.: 2021.1" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setPeriodoInicio(e.target.value)}></Input>
                 
-                <Text pt={"5vh"}>Período de início</Text>
+                <Text pt={"5vh"}>Período de fim da busca</Text>
                 <Input placeholder="Ex.: 2023.2" bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setPeriodoFim(e.target.value)}></Input>
               </Box>
             </Collapsible.Content>
