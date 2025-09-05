@@ -3,6 +3,7 @@ import { Avatar, Box, Button, Card } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
  import { PublicRoutes } from './routes/Router.tsx'
+import { ColorModeProvider } from './components/ui/color-mode.tsx'
 function App() {
 
   const router = createBrowserRouter([
@@ -26,11 +27,11 @@ function App() {
   });
 
   return (
-    <>
+    <ColorModeProvider>
       <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
       </QueryClientProvider>
-    </>
+    </ColorModeProvider>
   )
 }
 
