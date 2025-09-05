@@ -85,7 +85,7 @@ export const LoginPopUp = () => {
         title: "Carregando perfil...",
         type: "info",
       });
-      //checkEurecaTokenMutation.mutate({username: loginvalue, password: passwordvalue})
+      checkEurecaTokenMutation.mutate({username: loginvalue, password: passwordvalue})
     }
 
   return (
