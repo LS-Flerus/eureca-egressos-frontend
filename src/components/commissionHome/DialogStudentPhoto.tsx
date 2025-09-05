@@ -1,7 +1,7 @@
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { Button, CloseButton, Dialog, Field,  Input, Portal, Stack } from "@chakra-ui/react";
 import { useState } from "react";
-import { Toaster } from "../ui/toaster";
+import { toaster, Toaster } from "../ui/toaster";
 import { Form, useNavigate } from "react-router-dom";
 import { LuUpload } from "react-icons/lu";
 import { EstudanteResponse } from "@/interfaces/ServiceResponses";
@@ -9,6 +9,7 @@ import { uploadImageMongoDB } from "@/service/imageService";
 import { UpdateStudentPayload } from "@/interfaces/ServicePayloads";
 import { updateEstudante } from "@/service/estudantesService";
 import { FileUploadDropzone, FileUploadList, FileUploadRoot, FileUploadTrigger, } from "../ui/file-upload";
+import { error } from "console";
   
 type DialogStudentPhotoProps = {
   student: EstudanteResponse;
@@ -46,6 +47,7 @@ export const DialogStudentPhoto = ({ student, children }: DialogStudentPhotoProp
       }
     
         const handleSubmitImagem = async () => {
+          try {
             console.log("tá aqui a imagem:")
             const novaImagem = await uploadImageMongoDB(img);
             console.log(novaImagem)
@@ -58,6 +60,19 @@ export const DialogStudentPhoto = ({ student, children }: DialogStudentPhotoProp
                 photoId: novaImagem._id
             }
             const updatedStudent = await updateEstudante(payload);
+            toaster.create({
+                title: "Operação bem sucedida!",
+                description: "Recarregue a página para atualizar a interface",
+                type: "success"
+            });
+          } catch(error) {
+            console.log(error)
+            toaster.create({
+                            title: "Falha na operação",
+                            description: "Tente novamente mais tarde",
+                            type: "error"
+                        });
+          }
     }
     // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
 
