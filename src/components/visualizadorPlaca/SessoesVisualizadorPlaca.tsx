@@ -73,6 +73,24 @@ const SessoesVisualizadorPlaca = ({placa}: SessoesVisualizadorPlacaProps) => {
                 <Text whiteSpace="pre-line" color={EURECA_COLORS.AZUL_ESCURO}>{mapCourseCodeToName()}</Text>
             </Box>
         ):(<></>)}
+        <Box
+            bg={EURECA_COLORS.CINZA_CLARO}
+            p={6}
+            rounded="2xl"
+            shadow="sm"
+            borderWidth="1px"
+        >
+            <Text
+              fontSize="xl"
+              fontWeight="bold"
+              mb={2}
+              color={EURECA_COLORS.AZUL_ESCURO}
+            >
+              Período
+            </Text>
+            <Separator mb={3} />
+            <Text whiteSpace="pre-line" color={EURECA_COLORS.AZUL_ESCURO}>{placa.semester}</Text>
+        </Box>
         {isLoading ? <Text>Carregando seções...</Text> :
             <>{
                 !sessoesPlacas || sessoesPlacas.length === 0 ? <></> :(
