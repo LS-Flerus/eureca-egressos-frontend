@@ -100,8 +100,8 @@ const Home = () => {
                     </Center>
                     
                     {showResultsCard  && (
-                        <Box ref={resultsRef} mt={6} h="50vh">
-                            <CardRoot bg={EURECA_COLORS.CINZA} h="40vh">
+                        <Box ref={resultsRef} mt={6} h="80vh" mb={6}>
+                            <CardRoot bg={EURECA_COLORS.CINZA} h="80vh">
                                 <CardBody overflowY="auto">
                                     <Text fontSize="lg" fontWeight="bold" mb={4}>
                                         Resultados:

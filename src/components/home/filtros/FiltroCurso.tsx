@@ -87,6 +87,7 @@ const FiltroCurso = () => {
                             onChange={(e) => setSearch(e.target.value)}
                             bgColor={"white/85"}
                             placeholder="Buscar cursos..."
+                            color={"black"}
                         />
                         </InputGroup>
                         <Fieldset.Root>
