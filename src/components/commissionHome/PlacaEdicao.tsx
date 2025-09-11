@@ -54,7 +54,7 @@ const PlacaEdicao = () => {
     <Box h="100vh" p={8}>
 
       <Center>
-        <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="50vh" mb={6}>
+        <CardRoot bg={EURECA_COLORS.CINZA} w="80%" minH="50vh" mb={6} shadow={'xl'}>
             {isPlacaLoading && isEstudantesLoading ? (
                 <Text>Carregando...</Text>
             ) : (

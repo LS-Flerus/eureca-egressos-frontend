@@ -26,7 +26,7 @@ const FotosVisualizadorPlaca = ({idImage}: FotosVisualizadorPlacaProps) => {
     return (
         <Box outline="solid" bgColor={EURECA_COLORS.CINZA_CLARO} display="inline-block" overflow="hidden" m={3}>
             {img ? (<Image src={img} maxH="45vh" maxW="80vh" objectFit="contain" display="block"/>) : (
-                <Center w="80vh" h="45vh">
+                <Center w="45vh" h="80vh">
                     <Spinner size="xl" color={EURECA_COLORS.AZUL_ESCURO} />
                 </Center>
             )}

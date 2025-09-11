@@ -1,14 +1,8 @@
-import { Box, Button, createListCollection, For, Grid, GridItem, IconButton, Input, Separator, Text, Textarea, VStack} from "@chakra-ui/react";
-import { EURECA_COLORS, MAPEAMENTO_CAMPUS, SESSION_STORAGE } from "@/util/constants";
-import { useEffect, useState } from "react";
-import { GetEurecaProfileResponse, GetUsuariosResponse, PlacaResponse, SessoesPlacaResponse } from "@/interfaces/ServiceResponses";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getPlacasByCurso } from "@/service/placasService";
-import {  LuTrash } from "react-icons/lu";
-import { createUser, deleteUser, getUsuariosByCurso } from "@/service/userService";
-import { CreatePlaqueSessionPayload, CreateUserPayload } from "@/interfaces/ServicePayloads";
-import { createPlaqueSession, deletePlaqueSession, getSessoesByPlacaId } from "@/service/sessoesPlacaService";
-import { Curso } from "@/interfaces/Models";
+import { Box, For, Separator, Text } from "@chakra-ui/react";
+import { EURECA_COLORS, MAPEAMENTO_CAMPUS } from "@/util/constants";
+import { PlacaResponse, SessoesPlacaResponse } from "@/interfaces/ServiceResponses";
+import { useQuery } from "@tanstack/react-query";
+import { getSessoesByPlacaId } from "@/service/sessoesPlacaService";
 import { getCourses } from "@/service/filterService";
 
 type SessoesVisualizadorPlacaProps = {

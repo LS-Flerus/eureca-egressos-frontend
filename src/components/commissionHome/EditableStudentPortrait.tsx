@@ -17,7 +17,6 @@ const EditableStudentPortrait = ({estudante}: EditableStudentPortraitProps) => {
 // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------    
         const getImage = async () => {
             const image = await getImageFromMongoDB(estudante.photoId);
-            console.log("cadê minha foto?")
             console.log(image)
             setImg(image);
             return image;
