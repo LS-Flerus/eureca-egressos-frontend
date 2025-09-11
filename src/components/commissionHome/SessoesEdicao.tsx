@@ -70,12 +70,12 @@ const SessoesEdicao = () => {
                     </Text>
 
                     <Box mb={3}> 
-                        <Text mb={1}>Nome da sessão:</Text> 
+                        <Text mb={1}>Nome da seção:</Text> 
                         <Input value={nomeSessao} onChange={(e) => {setNomeSessao(e.target.value)}} placeholder="Ex.: Professores homenageados" bg={EURECA_COLORS.CINZA_CLARO} color={"black"}/> 
                     </Box>
 
                     <Box mb={3}>
-                    <Text mb={1}>Conteúdo da sessão:</Text>
+                    <Text mb={1}>Conteúdo da seção:</Text>
                     <Textarea
                         value={conteudoSessao}
                         onChange={(e) => setConteudoSessao(e.target.value)}

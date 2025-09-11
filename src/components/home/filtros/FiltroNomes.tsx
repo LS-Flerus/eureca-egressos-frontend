@@ -18,8 +18,8 @@ const FiltroNomes = () => {
 
     return (
         <Box display={"flex"} pt={"2vh"} spaceX={"10"}>
-            <Input placeholder="Filtrar placa por nome de aluno..." bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setNomeAluno(e.target.value)}></Input>
-            <Input placeholder="Filtrar placa por nome de turma..." bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setNomeTurma(e.target.value)}></Input>
+            <Input placeholder="Buscar placa por nome de aluno..." bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setNomeAluno(e.target.value)}></Input>
+            <Input placeholder="Buscar placa por nome de turma..." bg={EURECA_COLORS.CINZA_CLARO} _placeholder={{ color: "gray.500", opacity: 1 }} color="black" onChange={(e) => setNomeTurma(e.target.value)}></Input>
         </Box>
     );
 };

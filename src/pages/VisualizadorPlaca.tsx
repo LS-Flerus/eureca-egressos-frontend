@@ -68,6 +68,7 @@ const VisualizadorPlaca = () => {
             queryKey: ["dataGetAllPhotosDestaPlaca", {id: id}],
             queryFn: async () => {
                 const todasAsFotos = await getFotosByPlacaId(id)
+                console.log(todasAsFotos)
                 const fotoGeral = todasAsFotos.filter((f: GetPhotoResponse) => f.mainPhoto);
                 setFotoPrincipal(fotoGeral[0])
                 const fotosAdicionais = todasAsFotos.filter((f: GetPhotoResponse) => !f.mainPhoto);;
@@ -121,8 +122,27 @@ const VisualizadorPlaca = () => {
                     <Separator my={4} />
                     <Box mb={3}>
                         <Center>
-                            <Box outline={"solid"} bgColor={EURECA_COLORS.CINZA_CLARO} h={"45vh"} w={"80vh"} overflow={"hidden"}>
-                                { imgPrincipal ? (<Image src={imgPrincipal} />) : (<Center><Spinner size={"xl"} color={EURECA_COLORS.AZUL_ESCURO}/></Center>) }
+                            <Box outline="solid" bgColor={EURECA_COLORS.CINZA_CLARO} display="inline-block" overflow="hidden" m={3}>
+                                { fotoPrincipal?.photoId === "" ? (
+                                        <Center w="80vh" h="45vh">
+                                        <Text fontSize="lg" color={EURECA_COLORS.AZUL_ESCURO}>
+                                            Não há foto registrada para esta placa
+                                        </Text>
+                                        </Center>
+                                    ) : imgPrincipal ? (
+                                        <Image
+                                        src={imgPrincipal}
+                                        maxH="45vh"
+                                        maxW="80vh"
+                                        objectFit="contain"
+                                        display="block"
+                                        m="auto"
+                                        />
+                                    ) :
+                                    (<Center w="80vh" h="45vh">
+                                        <Spinner size={"xl"} color={EURECA_COLORS.AZUL_ESCURO}/>
+                                    </Center>) 
+                                }
                             </Box>
                         </Center>
                     </Box>
