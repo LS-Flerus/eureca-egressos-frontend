@@ -19,9 +19,9 @@ import EstudantesVisualizadorPlaca from "@/components/visualizadorPlaca/Estudant
 
 const VisualizadorPlaca = () => {
     
-        const [fotoPrincipal, setFotoPrincipal] = useState<GetPhotoResponse>()
-        const [imgPrincipal,setImgPrincipal] = useState("")
-        const [fotosSecundarias, setFotosSecundarias] = useState<GetPhotoResponse[]>()
+    const [fotoPrincipal, setFotoPrincipal] = useState<GetPhotoResponse>()
+    const [imgPrincipal,setImgPrincipal] = useState("")
+    const [fotosSecundarias, setFotosSecundarias] = useState<GetPhotoResponse[]>()
         
     const navigate = useNavigate();
     let { id } = useParams();
@@ -64,9 +64,7 @@ const VisualizadorPlaca = () => {
 
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     
-        const {data: dataAllPhotos, isLoading: isDataAllPhotosLoading} = useQuery({
-            queryKey: ["dataGetAllPhotosDestaPlaca", {id: id}],
-            queryFn: async () => {
+         const getFotoPrincipal = async () => {
                 const todasAsFotos = await getFotosByPlacaId(id)
                 console.log(todasAsFotos)
                 const fotoGeral = todasAsFotos.filter((f: GetPhotoResponse) => f.mainPhoto);
@@ -76,9 +74,12 @@ const VisualizadorPlaca = () => {
                 console.log(todasAsFotos)
     
                 return todasAsFotos;
-            }
-        })
-        
+         }
+
+        if(!fotoPrincipal && !fotosSecundarias) {
+            getFotoPrincipal()
+        }
+
         const getImagemPrincipalMutation = useMutation({
             mutationKey: ["fotoPrincipalDaPlacaDestaPlaca", {id: id}],
             mutationFn: getImageFromMongoDB,
@@ -88,14 +89,14 @@ const VisualizadorPlaca = () => {
         })
     
         useEffect(() => {
-            if ((!imgPrincipal || imgPrincipal === "") &&!isDataAllPhotosLoading &&fotoPrincipal) {
+            if ((!imgPrincipal || imgPrincipal === "") &&fotosSecundarias &&fotoPrincipal) {
                 if (fotoPrincipal.photoId === "") {
                     setImgPrincipal("");
                 } else {
                     getImagemPrincipalMutation.mutate(fotoPrincipal.photoId);
                 }
             }
-        }, [fotoPrincipal, isDataAllPhotosLoading]);
+        }, [fotoPrincipal,fotosSecundarias]);
 
     // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
 
@@ -109,7 +110,7 @@ const VisualizadorPlaca = () => {
 
       <Center>
         <CardRoot bg={EURECA_COLORS.CINZA} w="90%" minH="70vh" shadow="xl">
-            {isPlacaLoading && isEstudantesLoading && isDataAllPhotosLoading ? (
+            {isPlacaLoading && isEstudantesLoading ? (
                 <Text>Carregando...</Text>
             ) : (
                 <CardBody>
