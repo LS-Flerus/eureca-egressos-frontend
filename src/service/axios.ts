@@ -55,7 +55,7 @@ axiosImageManager.interceptors.response.use(
 );
 
 
-const eureca_DAS = `https://eureca.lsd.ufcg.edu.br/das/v2/`
+const eureca_DAS = `https://eureca.sti.ufcg.edu.br/das/v2/`
 
 export const axiosDAS = axios.create({
   baseURL: eureca_DAS,
@@ -77,7 +77,7 @@ axiosDAS.interceptors.response.use(
   }
 );
 
-const eureca_as = `https://eureca.lsd.ufcg.edu.br/as/`
+const eureca_as = `https://eureca.sti.ufcg.edu.br/as/`
 
 export const axiosAS = axios.create({
   baseURL: eureca_as,
