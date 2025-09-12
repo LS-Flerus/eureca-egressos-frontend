@@ -33,7 +33,7 @@ axiosBackend.interceptors.response.use(
   }
 );
 
-const image_manager_url = "https://eureca.lsd.ufcg.edu.br/egressos-image-manager/"
+const image_manager_url = "https://eureca.lsd.ufcg.edu.br/egressos/image-manager/"
 
 export const axiosImageManager = axios.create({
   baseURL: image_manager_url,
