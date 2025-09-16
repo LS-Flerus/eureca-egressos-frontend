@@ -9,6 +9,7 @@ import { CardPlacaCoordinator } from "@/components/coordinatorHome/CardPlacaCoor
 import { useNavigate } from "react-router-dom";
 import { LuTrash } from "react-icons/lu";
 import { CardPlaca } from "../home/CardPlaca";
+import { Toaster, toaster } from "../ui/toaster";
 
 const AbaPlacas = () => {
 
@@ -47,17 +48,33 @@ const AbaPlacas = () => {
         mutationKey: ["getCreatedPlaquesByFilter"],
         mutationFn: createPlacasEspecificas,
         onSuccess: async (data) => {
+            toaster.dismiss()
+            toaster.create({
+                title: "Operação bem sucedida!",
+                description: "Recarregue a página para atualizar a interface",
+                type: "success"
+            });
             const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
             const courseCode = String(eurecaProfile.attributes.code)
             const placasCriadas = await getPlacasByFilter({courseCode: courseCode})
             setResultsPlacasCriadas(placasCriadas);
         },
-        onError: (error) => {
-          console.log(error);
+        onError: (error) => {7
+            toaster.dismiss()
+            toaster.create({
+                title: "Falha na operação",
+                description: "Tente novamente mais tarde",
+                type: "error"
+            });
+            console.log(error);
         },
     });
     
     const handleCreatePlacasEspecificas = async () => {
+        toaster.create({
+            title: "Realizando operação...",
+            type: "info",
+        });
         const eurecaProfile: GetEurecaProfileResponse = JSON.parse(sessionStorage.getItem(SESSION_STORAGE.EURECA_PROFILE));
         const courseCode = String(eurecaProfile.attributes.code)
         createSpecificPlaques.mutate({periodos: listaPeriodosParaCriarPlacas, codigoDeCurso: courseCode})
@@ -137,7 +154,7 @@ const AbaPlacas = () => {
                     )}
                 </CardBody>
             </CardRoot>
-            
+            <Toaster/>
         </Box>
     );
 };

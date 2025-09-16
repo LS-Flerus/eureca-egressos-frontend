@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCampi } from "@/service/filterService";
 
 const FiltroCampus = () => {
-    const [openCampus, setOpenCampus] = useState(false);
+    const [openCampus, setOpenCampus] = useState(true);
     const [campusSelecionados, setCampusSelecionados] = useState<string[]>([]);
 
     const {data: dataCampi, isLoading: isCampusLoading} = useQuery({
@@ -28,7 +28,7 @@ const FiltroCampus = () => {
     return (
         <CardRoot size="sm" bg={EURECA_COLORS.AZUL_MEDIO}>
             <CardBody cursor="pointer">
-                <Collapsible.Root >
+                <Collapsible.Root open={openCampus} onOpenChange={(details) => setOpenCampus(details.open)}>
                 <Collapsible.Trigger
                     paddingY="3"
                     alignContent="center"

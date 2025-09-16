@@ -19,9 +19,9 @@ import EstudantesVisualizadorPlaca from "@/components/visualizadorPlaca/Estudant
 
 const VisualizadorPlaca = () => {
     
-        const [fotoPrincipal, setFotoPrincipal] = useState<GetPhotoResponse>()
-        const [imgPrincipal,setImgPrincipal] = useState("")
-        const [fotosSecundarias, setFotosSecundarias] = useState<GetPhotoResponse[]>()
+    const [fotoPrincipal, setFotoPrincipal] = useState<GetPhotoResponse>()
+    const [imgPrincipal,setImgPrincipal] = useState("")
+    const [fotosSecundarias, setFotosSecundarias] = useState<GetPhotoResponse[]>()
         
     const navigate = useNavigate();
     let { id } = useParams();
@@ -64,10 +64,9 @@ const VisualizadorPlaca = () => {
 
     // -------------------------------------- SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
     
-        const {data: dataAllPhotos, isLoading: isDataAllPhotosLoading} = useQuery({
-            queryKey: ["dataGetAllPhotosDestaPlaca", {id: id}],
-            queryFn: async () => {
+         const getFotoPrincipal = async () => {
                 const todasAsFotos = await getFotosByPlacaId(id)
+                console.log(todasAsFotos)
                 const fotoGeral = todasAsFotos.filter((f: GetPhotoResponse) => f.mainPhoto);
                 setFotoPrincipal(fotoGeral[0])
                 const fotosAdicionais = todasAsFotos.filter((f: GetPhotoResponse) => !f.mainPhoto);;
@@ -75,9 +74,12 @@ const VisualizadorPlaca = () => {
                 console.log(todasAsFotos)
     
                 return todasAsFotos;
-            }
-        })
-        
+         }
+
+        if(!fotoPrincipal && !fotosSecundarias) {
+            getFotoPrincipal()
+        }
+
         const getImagemPrincipalMutation = useMutation({
             mutationKey: ["fotoPrincipalDaPlacaDestaPlaca", {id: id}],
             mutationFn: getImageFromMongoDB,
@@ -87,14 +89,14 @@ const VisualizadorPlaca = () => {
         })
     
         useEffect(() => {
-            if ((!imgPrincipal || imgPrincipal === "") &&!isDataAllPhotosLoading &&fotoPrincipal) {
+            if ((!imgPrincipal || imgPrincipal === "") &&fotosSecundarias &&fotoPrincipal) {
                 if (fotoPrincipal.photoId === "") {
                     setImgPrincipal("");
                 } else {
                     getImagemPrincipalMutation.mutate(fotoPrincipal.photoId);
                 }
             }
-        }, [fotoPrincipal, isDataAllPhotosLoading]);
+        }, [fotoPrincipal,fotosSecundarias]);
 
     // -------------------------------------- FIM DA SEÇÃO DE TRATAMENTO DE IMAGEM ----------------------------------------------------------
 
@@ -108,7 +110,7 @@ const VisualizadorPlaca = () => {
 
       <Center>
         <CardRoot bg={EURECA_COLORS.CINZA} w="90%" minH="70vh" shadow="xl">
-            {isPlacaLoading && isEstudantesLoading && isDataAllPhotosLoading ? (
+            {isPlacaLoading && isEstudantesLoading ? (
                 <Text>Carregando...</Text>
             ) : (
                 <CardBody>
@@ -121,8 +123,27 @@ const VisualizadorPlaca = () => {
                     <Separator my={4} />
                     <Box mb={3}>
                         <Center>
-                            <Box outline={"solid"} bgColor={EURECA_COLORS.CINZA_CLARO} h={"45vh"} w={"80vh"} overflow={"hidden"}>
-                                { imgPrincipal ? (<Image src={imgPrincipal} />) : (<Center><Spinner size={"xl"} color={EURECA_COLORS.AZUL_ESCURO}/></Center>) }
+                            <Box outline="solid" bgColor={EURECA_COLORS.CINZA_CLARO} display="inline-block" overflow="hidden" m={3}>
+                                { fotoPrincipal?.photoId === "" ? (
+                                        <Center w="80vh" h="45vh">
+                                        <Text fontSize="lg" color={EURECA_COLORS.AZUL_ESCURO}>
+                                            Não há foto registrada para esta placa
+                                        </Text>
+                                        </Center>
+                                    ) : imgPrincipal ? (
+                                        <Image
+                                        src={imgPrincipal}
+                                        maxH="45vh"
+                                        maxW="80vh"
+                                        objectFit="contain"
+                                        display="block"
+                                        m="auto"
+                                        />
+                                    ) :
+                                    (<Center w="80vh" h="45vh">
+                                        <Spinner size={"xl"} color={EURECA_COLORS.AZUL_ESCURO}/>
+                                    </Center>) 
+                                }
                             </Box>
                         </Center>
                     </Box>

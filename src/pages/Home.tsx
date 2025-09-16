@@ -12,6 +12,7 @@ import { FiltersPayload } from "@/interfaces/ServicePayloads";
 import { CardPlaca } from "@/components/home/CardPlaca";
 import { PlacaResponse } from "@/interfaces/ServiceResponses";
 import { LoginPopUp } from "@/components/home/LoginPopUp";
+import { toaster } from "@/components/ui/toaster";
 
 const Home = () => {
 
@@ -33,7 +34,10 @@ const Home = () => {
         };
         console.log(payload)
         setResults([])
-        setShowResultsCard(true);
+        toaster.create({
+            title: "Carregando placas...",
+            type: "info",
+        });
         getPlaquesByFilter.mutate(payload)
      };
 
@@ -41,13 +45,21 @@ const Home = () => {
         mutationKey: ["getPlaquesByFilter"],
         mutationFn: getPlacasByFilter,
         onSuccess: (data) => {
+            toaster.dismiss()
             setResults(data); // atualiza o estado
+            setShowResultsCard(true);
             if (resultsRef.current) {
                 resultsRef.current.scrollIntoView({ behavior: "smooth" }); // rola para o card
             }
         },
         onError: (error) => {
-          console.log(error);
+            toaster.dismiss()
+            toaster.create({
+                title: "Falha na busca",
+                description: "Tente novamente mais tarde",
+                type: "error"
+            });
+            console.log(error);
         },
     });
 
@@ -99,28 +111,38 @@ const Home = () => {
                         </Button>
                     </Center>
                     
-                    {showResultsCard  && (
-                        <Box ref={resultsRef} mt={6} h="50vh">
-                            <CardRoot bg={EURECA_COLORS.CINZA} h="40vh">
-                                <CardBody overflowY="auto">
-                                    <Text fontSize="lg" fontWeight="bold" mb={4}>
-                                        Resultados:
-                                    </Text>
-                                    {results === null ? (
-                                        <Text>Carregando...</Text>
-                                    ) : results.length > 0 ? (
-                                        <SimpleGrid columns={4} px={2} gapX={2} justifyItems={"stretch"}>
-                                            <For each={results}>
-                                                {(item) => <CardPlaca placa={item}></CardPlaca>}
-                                            </For>
-                                        </SimpleGrid>
-                                    ) : (
-                                        <Text>Nenhuma placa encontrada.</Text>
-                                    )}
-                                </CardBody>
+                    {showResultsCard && (
+                        <Box ref={resultsRef} mt={6} h="80vh" mb={6}>
+                            <CardRoot bg={EURECA_COLORS.CINZA} h="80vh" w="100%">
+                            <CardBody>
+                                <Text fontSize="lg" fontWeight="bold" mb={4}>
+                                Resultados:
+                                </Text>
+                                <Box overflowY="auto" maxH="70vh" w="100%">
+                                {results === null ? (
+                                    <Text>Carregando...</Text>
+                                ) : results.length > 0 ? (
+                                    <SimpleGrid
+                                    columns={4}
+                                    px={2}
+                                    gap={2}
+                                    justifyItems="stretch"
+                                    w="100%"
+                                    >
+                                    <For each={results}>
+                                        {(item) => (
+                                        <CardPlaca placa={item} />
+                                        )}
+                                    </For>
+                                    </SimpleGrid>
+                                ) : (
+                                    <Text>Nenhuma placa encontrada.</Text>
+                                )}
+                                </Box>
+                            </CardBody>
                             </CardRoot>
                         </Box>
-                    )}
+)}
                 </Box>
             </Box>
         </>

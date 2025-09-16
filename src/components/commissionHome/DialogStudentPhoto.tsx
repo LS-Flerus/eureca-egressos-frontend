@@ -45,20 +45,11 @@ export const DialogStudentPhoto = ({ student, children }: DialogStudentPhotoProp
             console.log(image)
         }
       }
-
-      /*
-      const fetchImage = async() =>{
-        const res = await fetch("http://localhost:8081")
-        const data = await res.json()
-        setAllImage(data.data)
-      }
-      */
     
         const handleSubmitImagem = async () => {
           try {
-            console.log("tá aqui a imagem:")
             const novaImagem = await uploadImageMongoDB(img);
-            console.log(novaImagem)
+
             const payload: UpdateStudentPayload = {
                 id: student.id,
                 name: student.name,
@@ -105,7 +96,7 @@ export const DialogStudentPhoto = ({ student, children }: DialogStudentPhotoProp
                           <Stack gap="2" w="full">
                                 <FileUploadRoot alignItems="stretch" maxFiles={1} onFileChange={handleUploadImage}>
                                     <FileUploadDropzone
-                                        label="Faça o upload da foto da turma inteira"
+                                        label="Faça o upload da foto do(a) estudante"
                                         description=".png ou .jpg de até 5MB"
                                         bgColor={"black/50"}
                                         cursor={"pointer"}

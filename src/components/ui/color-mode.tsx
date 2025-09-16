@@ -11,11 +11,17 @@ export interface ColorModeProviderProps extends ThemeProviderProps {}
 
 export function ColorModeProvider(props: ColorModeProviderProps) {
   return (
-    <ThemeProvider attribute="class" disableTransitionOnChange {...props} defaultTheme="light" />
+    <ThemeProvider
+      attribute="class"
+      disableTransitionOnChange
+      defaultTheme="dark"
+      forcedTheme="dark"
+      {...props}
+    />
   )
 }
 
-export type ColorMode = "light"
+export type ColorMode = "dark"
 
 export interface UseColorModeReturn {
   colorMode: ColorMode
@@ -24,60 +30,21 @@ export interface UseColorModeReturn {
 }
 
 export function useColorMode(): UseColorModeReturn {
-  const { resolvedTheme, setTheme, forcedTheme } = useTheme()
-  const colorMode = forcedTheme || resolvedTheme
-  const toggleColorMode = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark")
-  }
+  const { resolvedTheme, setTheme } = useTheme()
+  const colorMode = resolvedTheme as ColorMode
+  const toggleColorMode = () => setTheme("dark")
+
   return {
-    colorMode: colorMode as ColorMode,
+    colorMode,
     setColorMode: setTheme,
     toggleColorMode,
   }
 }
 
-interface ColorModeButtonProps extends Omit<IconButtonProps, "aria-label"> {}
-
-export const ColorModeButton = React.forwardRef<
-  HTMLButtonElement,
-  ColorModeButtonProps
->(function ColorModeButton(props, ref) {
-  const { toggleColorMode } = useColorMode()
-  return (
-    <ClientOnly fallback={<Skeleton boxSize="8" />}>
-      <IconButton
-        onClick={toggleColorMode}
-        variant="ghost"
-        aria-label="Toggle color mode"
-        size="sm"
-        ref={ref}
-        {...props}
-        css={{
-          _icon: {
-            width: "5",
-            height: "5",
-          },
-        }}
-      >
-      </IconButton>
-    </ClientOnly>
-  )
-})
-
-export const LightMode = React.forwardRef<HTMLSpanElement, SpanProps>(
-  function LightMode(props, ref) {
-    return (
-      <Span
-        color="fg"
-        display="contents"
-        className="chakra-theme light"
-        colorPalette="gray"
-        colorScheme="light"
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+export const ColorModeButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+  function ColorModeButton(props, ref) {
+    return <Skeleton boxSize="8" /> 
+  }
 )
 
 export const DarkMode = React.forwardRef<HTMLSpanElement, SpanProps>(
