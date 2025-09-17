@@ -82,7 +82,7 @@ const SessoesEdicao = () => {
                         placeholder={`Exemplo: Franklin de Souza Ramalho, Joseana Macêdo Fechine R. de Araújo, Tiago Lima Massoni`}
                         bg={EURECA_COLORS.CINZA_CLARO}
                         color="black"
-                        rows={8} // altura inicial da caixa
+                        rows={8}
                     />
                     </Box>
 
