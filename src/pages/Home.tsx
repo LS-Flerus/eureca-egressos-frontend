@@ -46,10 +46,10 @@ const Home = () => {
         mutationFn: getPlacasByFilter,
         onSuccess: (data) => {
             toaster.dismiss()
-            setResults(data); // atualiza o estado
+            setResults(data); 
             setShowResultsCard(true);
             if (resultsRef.current) {
-                resultsRef.current.scrollIntoView({ behavior: "smooth" }); // rola para o card
+                resultsRef.current.scrollIntoView({ behavior: "smooth" }); 
             }
         },
         onError: (error) => {

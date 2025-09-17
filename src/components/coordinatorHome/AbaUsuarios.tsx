@@ -154,11 +154,11 @@ const AbaUsuarios = () => {
                         backgroundColor: EURECA_COLORS.CINZA_CLARO,
                         borderColor: EURECA_COLORS.AZUL_ESCURO,
                         _hover: { borderColor: EURECA_COLORS.AZUL_ESCURO },
-                        color: "black", // cor do texto selecionado
+                        color: "black",
                     }),
                     menu: (provided) => ({
                         ...provided,
-                        zIndex: 9999, // garante que o menu fique sobre outros elementos
+                        zIndex: 9999,
                     }),
                     }}
                 />

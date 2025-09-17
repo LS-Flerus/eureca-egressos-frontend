@@ -45,14 +45,6 @@ export const DialogStudentPhoto = ({ student, children }: DialogStudentPhotoProp
             console.log(image)
         }
       }
-
-      /*
-      const fetchImage = async() =>{
-        const res = await fetch("http://localhost:8081")
-        const data = await res.json()
-        setAllImage(data.data)
-      }
-      */
     
         const handleSubmitImagem = async () => {
           try {
