@@ -1,7 +1,7 @@
 import { SESSION_STORAGE } from "@/util/constants";
 import axios, { AxiosError } from "axios";
 
-const api_url = "https://eureca.lsd.ufcg.edu.br/egressos-backend/" // "http://localhost:8080/" //
+const api_url = "https://eureca.sti.ufcg.edu.br/egressos-backend/" // "http://localhost:8080/" //
 
 export const axiosBackend = axios.create({
   baseURL: api_url,
@@ -33,7 +33,7 @@ axiosBackend.interceptors.response.use(
   }
 );
 
-const image_manager_url = "https://eureca.lsd.ufcg.edu.br/egressos/image-manager/"
+const image_manager_url = "https://eureca.sti.ufcg.edu.br/egressos/image-manager/"
 
 export const axiosImageManager = axios.create({
   baseURL: image_manager_url,
