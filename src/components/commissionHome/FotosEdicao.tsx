@@ -234,7 +234,7 @@ const FotosEdicao = () => {
                                 <Text mb={1}>Adicionar fotos extras:</Text>
                                 <FileUploadRoot alignItems="stretch" maxFiles={1} onFileChange={handleUploadImagemExtra}>
                                     <FileUploadDropzone w={"36vw"} h={"36vh"}
-                                        label="Faça o upload da foto da turma inteira"
+                                        label="Faça o upload de foto adicionais a serem postas na placa"
                                         description=".png ou .jpg de até 5MB"
                                         bgColor={"black/50"}
                                         style={{ cursor: "pointer" }}

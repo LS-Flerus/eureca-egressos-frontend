@@ -4,7 +4,7 @@ import { DIMENSOES, EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useEffect, useState } from "react";
 
 const FiltroPeriodo = () => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     const [periodoInicio, setPeriodoInicio] = useState<string>();
     const [periodoFim, setPeriodoFim] = useState<string>();
@@ -22,7 +22,7 @@ const FiltroPeriodo = () => {
   return (
     <CardRoot size="sm" cursor="pointer" bg={EURECA_COLORS.AZUL_MEDIO}>
         <CardBody cursor="pointer">
-            <Collapsible.Root >
+            <Collapsible.Root open={open} onOpenChange={(details) => setOpen(details.open)}>
             <Collapsible.Trigger
                 paddingY="3"
                 alignContent="center"

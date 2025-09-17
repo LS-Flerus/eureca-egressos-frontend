@@ -1,17 +1,15 @@
-import { Box, Button, Combobox, createListCollection, For, Grid, GridItem, IconButton, Input, ListCollection, Menu, MenuContent, MenuItem, MenuRoot, MenuTrigger, Portal, Select, SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText, SimpleGrid, Text, useListCollection} from "@chakra-ui/react";
-import { CardBody, CardRoot } from "@chakra-ui/react/card";
+import { Box, Button,  createListCollection, IconButton, Input, Text} from "@chakra-ui/react";
 import { EURECA_COLORS, SESSION_STORAGE } from "@/util/constants";
 import { useEffect, useState } from "react";
 import { GetEurecaProfileResponse, GetUsuariosResponse, PlacaResponse } from "@/interfaces/ServiceResponses";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { createPlacasEspecificas, getPlacasByCurso, getPlacasByFilter } from "@/service/placasService";
-import { CardPlacaCoordinator } from "@/components/coordinatorHome/CardPlacaCoordinatorHome";
-import { useNavigate } from "react-router-dom";
-import { LuCog, LuTrash } from "react-icons/lu";
+import { useQuery } from "@tanstack/react-query";
+import { getPlacasByCurso} from "@/service/placasService";
+import { LuTrash } from "react-icons/lu";
 import { createUser, deleteUser, getUsuariosByCurso } from "@/service/userService";
 import { CreateUserPayload } from "@/interfaces/ServicePayloads";
 import { getStudentFromDasByEnrollment } from "@/service/eurecaService";
-import { toaster } from "../ui/toaster";
+import { Select } from "chakra-react-select"
+import { toaster, Toaster } from "../ui/toaster";
 
 const AbaUsuarios = () => {
     const [usuarios, setUsuarios] = useState<GetUsuariosResponse[]>([]);
@@ -90,9 +88,19 @@ const AbaUsuarios = () => {
     }
 
     const handleCreateUser = async () => {
+        toaster.create({
+            title: "Realizando operação...",
+            type: "info",
+        });
         try {
             console.log(sessionStorage.getItem(SESSION_STORAGE.EURECA_TOKEN))
             const student = await getStudentFromDasByEnrollment(enrollment)
+            toaster.dismiss();
+            toaster.create({
+                title: "Operação bem sucedida!",
+                description: "Recarregue a página para atualizar a interface",
+                type: "success"
+            });
             let payload: CreateUserPayload = {
                 name: student.nome,
                 enrollment: student.matricula_do_estudante,
@@ -104,6 +112,7 @@ const AbaUsuarios = () => {
             setUsuarios([...usuarios,novoUsuario])
         } catch (error) {
             console.log(error);
+            toaster.dismiss
             toaster.create({
             title: "Falha na operação",
             description: "Certifique-se de que essa é uma matrícula válida de um estudante do seu curso",
@@ -126,20 +135,33 @@ const AbaUsuarios = () => {
                     <Input value={enrollment} onChange={(e) => setEnrollment(e.target.value)} placeholder="Ex.: 121113333" bg={EURECA_COLORS.CINZA_CLARO} color={"black"}/>
                 </Box>
 
-                <Box mb={3}>
-                    <Text mb={1}>Placa:</Text>
-                    <SelectRoot mt={2} collection={mapeamentoColection} onValueChange={({ value }) => {setSelectValue(value[0]); console.log(value[0])}}>
-                        <SelectTrigger bg={EURECA_COLORS.CINZA_CLARO}>
-                            <SelectValueText placeholder="Período" color={"black"}/>
-                        </SelectTrigger>
-                        <SelectContent>
-                            {mapeamentoColection.items.map((type) => (
-                            <SelectItem item={type} key={String(type.value)}>
-                                {type.label}
-                            </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </SelectRoot>
+                <Box mb={3} bg={EURECA_COLORS.CINZA}>
+                <Text mb={1}>Placa:</Text>
+                <Select
+                    options={mapeamentoColection.items.map(i => ({ value: i.value, label: i.label }))}
+                    value={mapeamentoColection.items
+                    .map(i => ({ value: i.value, label: i.label }))
+                    .find(i => i.value === selectValue)}
+                    onChange={(option) => setSelectValue(option?.value)}
+                    placeholder="Período"
+                    chakraStyles={{
+                    container: (provided) => ({
+                        ...provided,
+                        w: "full",
+                    }),
+                    control: (provided) => ({
+                        ...provided,
+                        backgroundColor: EURECA_COLORS.CINZA_CLARO,
+                        borderColor: EURECA_COLORS.AZUL_ESCURO,
+                        _hover: { borderColor: EURECA_COLORS.AZUL_ESCURO },
+                        color: "black",
+                    }),
+                    menu: (provided) => ({
+                        ...provided,
+                        zIndex: 9999,
+                    }),
+                    }}
+                />
                 </Box>
 
                 <Button colorScheme="blue" mt={2} bg={EURECA_COLORS.AZUL_ESCURO} color={EURECA_COLORS.BRANCO} onClick={handleCreateUser}>
@@ -181,6 +203,7 @@ const AbaUsuarios = () => {
                 </>)}
             
             </Box>
+            <Toaster/>
         </>
     );
 };

@@ -8,7 +8,7 @@ import { Curso } from "@/interfaces/Models";
 import { LuSearch } from "react-icons/lu";
 
 const FiltroCurso = () => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [cursosSelecionados, setCursosSelecionados] = useState<string[]>([]);
     const [sortConfig, setSortConfig] = useState<{ key: keyof Curso; direction: "asc" | "desc" } | null>(null);
     const [search, setSearch] = useState("");
@@ -64,7 +64,7 @@ const FiltroCurso = () => {
     return (
         <CardRoot size="sm" bg={EURECA_COLORS.AZUL_MEDIO}>
         <CardBody cursor="pointer">
-            <Collapsible.Root >
+            <Collapsible.Root  open={open} onOpenChange={(details) => setOpen(details.open)}>
             <Collapsible.Trigger
                 paddingY="3"
                 alignContent="center"
@@ -87,6 +87,7 @@ const FiltroCurso = () => {
                             onChange={(e) => setSearch(e.target.value)}
                             bgColor={"white/85"}
                             placeholder="Buscar cursos..."
+                            color={"black"}
                         />
                         </InputGroup>
                         <Fieldset.Root>

@@ -12,6 +12,8 @@ export const getFotosByPlacaId = async(id: string) => {
             }
         }
     )
+    console.log(data)
+    console.log("Por que vem nada?")
     return data;
 }
 

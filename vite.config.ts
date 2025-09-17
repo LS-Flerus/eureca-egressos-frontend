@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths(), tailwindcss()],
   server: {
     allowedHosts: ['eureca.lsd.ufcg.edu.br','localhost'],
+    host: true,
+    port: 5173
   },
   base: '/egressos/'
 })
